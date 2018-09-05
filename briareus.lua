@@ -11,6 +11,14 @@ local defaults = {
 		x = 0,
 		y = 0
 	},
+	bg = {
+		alpha = 150,
+		blue = 0,
+		green = 0,
+		red = 0,
+		visible = true,
+	},
+	padding = 8,
 	text = {
 		font = 'Consolas',
 		size = 10
@@ -18,7 +26,7 @@ local defaults = {
 }
 
 settings = config.load(defaults)
-local text_box = texts.new(settings)
+text_box = texts.new(settings)
 
 windower.register_event('load', 'incoming text', 'remove item', function()
 
@@ -27,7 +35,16 @@ windower.register_event('load', 'incoming text', 'remove item', function()
   local pop_items = get_pop_items_from_inventory(inventory)
   local pop_key_items = get_pop_items_from_key_items(key_items)
   regenerate_text(pop_items, pop_key_items)
+	set_text_bg(pop_key_items)
 end)
+
+function set_text_bg(pop_key_items)
+	if pop_key_items.shield and pop_key_items.armband and pop_key_items.collar then
+		text_box:bg_color(0, 75, 0)
+	else
+		text_box:bg_color(0, 0, 0)
+	end
+end
 
 function get_pop_items_from_key_items(key_items)
 	local shield = false
@@ -75,9 +92,9 @@ function get_pop_items_from_inventory(inventory)
 end
 
 function regenerate_text(pop_items, pop_key_items)
-  local success = '\\cs(0,255,0)'
+  local success = '\\cs(100,255,100)'
   local warning = '\\cs(255,170,0)'
-  local danger = '\\cs(255,0,0)'
+  local danger = '\\cs(255,50,50)'
   local normal = '\\cs(255,255,255)'
 
   local shield_item_text = 'Trophy Shield'
