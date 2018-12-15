@@ -5,6 +5,7 @@ _addon.version = '1.0.0'
 
 texts = require('texts')
 config = require('config')
+res = require('resources')
 
 local defaults = {
 	pos = {
@@ -28,128 +29,77 @@ local defaults = {
 settings = config.load(defaults)
 text_box = texts.new(settings)
 
-windower.register_event('load', 'incoming text', 'remove item', function()
+color = {}
+color.success = '\\cs(100,255,100)'
+color.warning = '\\cs(255,170,0)'
+color.danger = '\\cs(255,50,50)'
+color.normal = '\\cs(255,255,255)'
+color.close = '\\cr'
 
-  local inventory = windower.ffxi.get_items().inventory
-  local key_items = windower.ffxi.get_key_items()
-  local pop_items = get_pop_items_from_inventory(inventory)
-  local pop_key_items = get_pop_items_from_key_items(key_items)
-  regenerate_text(pop_items, pop_key_items)
-	set_text_bg(pop_key_items)
+--tracking = settings.tracking
+tracking = 'briareus'
+
+tracking_nm_data = require('nms/' .. tracking)
+
+windower.register_event('load', 'incoming text', 'remove item', function()
+  if tracking then
+    local items = windower.ffxi.get_items().inventory
+    local key_items = windower.ffxi.get_key_items()
+    regenerate_text(items, key_items)
+  end
 end)
 
-function set_text_bg(pop_key_items)
-	if pop_key_items.shield and pop_key_items.armband and pop_key_items.collar then
+function set_text_bg(has_all_kis)
+	if has_all_kis then
 		text_box:bg_color(0, 75, 0)
 	else
 		text_box:bg_color(0, 0, 0)
 	end
 end
 
-function get_pop_items_from_key_items(key_items)
-	local shield = false
-	local armband = false
-  local collar = false
-  for _,item_id in pairs(key_items) do
-    if item_id == 1482 then
-      shield = true
-    elseif item_id == 1483 then
-      armband = true
-    elseif item_id == 1484 then
-      collar = true
+function owns_item(id, items)
+	local owned = false
+
+  for _, item_id in pairs(items) do
+    if item_id == id then
+      owned = true
+      break
     end
   end
 
-  return {
-    shield = shield,
-    armband = armband,
-    collar = collar
-  }
+  return owned
 end
 
-function get_pop_items_from_inventory(inventory)
-  local shield = false
-  local sock = false
-  local armband = false
+function ucwords(str)
+  return string.gsub(" " .. str, "%W%l", string.upper):sub(2)
+end
 
-  for _,item in pairs(inventory) do
-    if type(item) == "table" then
-      if item.id == 2894 then
-        shield = true
-      elseif item.id == 2895 then
-        sock = true
-      elseif item.id == 2896 then
-        armband = true
-      end
+function regenerate_text(items, key_items)
+  local text = ucwords(tracking)
+  local has_all_kis = true
+  for _, key_item_data in pairs(tracking_nm_data.data) do
+    local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
+    local has_pop_ki = owns_item(key_item_data.id, key_items)
+    local pop_ki_color = color.success
+    local mob_data = key_item_data.from
+    local pop_item = res.items[mob_data.pop_item].en
+    local has_pop_item = owns_item(mob_data.pop_item, items)
+    local pop_item_color = color.success
+
+    if not has_pop_ki then
+      pop_ki_color = color.danger
+      has_all_kis = false
     end
+
+    if not has_pop_item then
+      pop_item_color = color.danger
+    end
+
+    text = text .. '\n\n' .. mob_data.name .. '\n' ..
+    '  ' .. pop_item_color .. pop_item .. color.close .. ' > ' .. pop_ki_color .. pop_ki_name .. color.close
   end
 
-  return {
-    shield = shield,
-    sock = sock,
-    armband = armband
-  }
-end
-
-function regenerate_text(pop_items, pop_key_items)
-  local success = '\\cs(100,255,100)'
-  local warning = '\\cs(255,170,0)'
-  local danger = '\\cs(255,50,50)'
-  local normal = '\\cs(255,255,255)'
-
-  local shield_item_text = 'Trophy Shield'
-	local shield_key_item_text = 'Dented Gigas Shield'
-
-  local sock_item_text = 'Oversized Sock'
-	local armband_key_item_text = 'Warped Gigas Armband'
-
-  local armband_item_text = 'Massive Armband'
-	local collar_key_item_text = 'Severed Gigas Collar'
-
-  if pop_items.shield then
-    shield_item_text = success .. shield_item_text .. '\\cr'
-  else
-    shield_item_text = danger .. shield_item_text .. '\\cr'
-  end
-
-	if pop_key_items.shield then
-    shield_key_item_text = success .. shield_key_item_text .. '\\cr'
-  else
-    shield_key_item_text = danger .. shield_key_item_text .. '\\cr'
-  end
-
-  if pop_items.sock then
-    sock_item_text = success .. sock_item_text .. '\\cr'
-  else
-    sock_item_text = danger .. sock_item_text .. '\\cr'
-  end
-
-	if pop_key_items.armband then
-    armband_key_item_text = success .. armband_key_item_text .. '\\cr'
-  else
-    armband_key_item_text = danger .. armband_key_item_text .. '\\cr'
-  end
-
-  if pop_items.armband then
-    armband_item_text = success .. armband_item_text .. '\\cr'
-  else
-    armband_item_text = danger .. armband_item_text .. '\\cr'
-  end
-
-	if pop_key_items.collar then
-    collar_key_item_text = success .. collar_key_item_text .. '\\cr'
-  else
-    collar_key_item_text = danger .. collar_key_item_text .. '\\cr'
-  end
-
-  local text = _addon.name .. '\n\n' ..
-		'Adamastor (North)' .. '\n' ..
-		'  ' .. shield_item_text .. ' > ' .. shield_key_item_text .. '\n\n' ..
-	  'Grandgousier (South)' .. '\n' ..
-    '  ' .. armband_item_text .. ' > ' .. collar_key_item_text .. '\n\n' ..
-		'Pantagruel (East)' .. '\n' ..
-    '  ' .. sock_item_text .. ' > ' .. armband_key_item_text
-
+  set_text_bg(has_all_kis)
 	text_box:text(text)
 	text_box:visible(true)
 end
