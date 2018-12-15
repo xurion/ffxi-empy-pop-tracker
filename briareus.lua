@@ -6,6 +6,7 @@ _addon.version = '1.0.0'
 texts = require('texts')
 config = require('config')
 res = require('resources')
+file = require('files')
 
 local defaults = {
 	pos = {
@@ -38,14 +39,37 @@ color.close = '\\cr'
 
 --tracking = settings.tracking
 tracking = 'briareus'
+tracking_file = nil
+tracking_nm_data = nil
 
-tracking_nm_data = require('nms/' .. tracking)
+function load_tracking_data(nm)
+  if package.loaded[tracking_file] then
+    package.loaded[tracking_file] = nil
+  end
+  tracking_file = 'nms/' .. nm
+  tracking_nm_data = require(tracking_file)
+end
+
+load_tracking_data(tracking)
 
 windower.register_event('load', 'incoming text', 'remove item', function()
   if tracking then
     local items = windower.ffxi.get_items().inventory
     local key_items = windower.ffxi.get_key_items()
     regenerate_text(items, key_items)
+  end
+end)
+
+windower.register_event('addon command', function(command, arg)
+  if command == 'track' and arg then
+    if not file.exists('nms/' .. arg .. '.lua') then
+      tracking = nil
+      text_box:visible(false)
+      print('Unknown NM: ' .. arg)
+    else
+      tracking = arg
+      load_tracking_data(tracking)
+    end
   end
 end)
 
