@@ -4,26 +4,26 @@ return {
     {
       id = 1473, --Sodden sandworm husk
       from = {
-        name = 'Minhocao (Roams in I-6)',
+        name = 'Minhocao (Timed, 10-15 mins, (I-6))',
       }
     },
     {
       id = 1475, --Sticky gnat wing
       from = {
-        name = 'Adze (G-5)'
+        name = 'Adze (Times, 10-15 mins, (G-5))'
       }
     },
     {
       id = 1472, --Fat-lined cockatrice skin
       from = {
-        name = 'Alectryon',
+        name = 'Alectryon (H-8)',
         pop_items = {2923, 2949}, --Cockatrice Tailmeat, Quivering Eft Egg
       }
     },
     {
       id = 1474, --Luxuriant manticore mane
       from = {
-        name = 'Muscaliet',
+        name = 'Muscaliet (J-6)',
         pop_items = {2925, 2950}, --Resilient Mane, Smooth Whisker
       }
     },
@@ -31,10 +31,10 @@ return {
 }
 
 --[[
-Minhocao (Roams in I-6)
+Minhocao
   Sodden sandworm husk
 
-Adze (G-5)
+Adze
   Sticky gnat wing
 
 Cockatrice Tailmeat
