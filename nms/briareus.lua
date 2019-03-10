@@ -1,40 +1,37 @@
 return {
-  name = 'Briareus',
-  data = {
-    {
-      id = 1482, --dented Gigas shield
-      from = {
-        name = 'Adamastor (North, (C-4))',
-        pop_items = {2894}, --Trophy Shield
-      }
-    },
-    {
-      id = 1484, --severed Gigas collar
-      from = {
-        name = 'Grandgousier (South, (F-10))',
-        pop_items = {2896}, --Massive Armband
-      }
-    },
-    {
-      id = 1483, --warped Gigas armband
-      from = {
-        name = 'Pantagruel (East, (F-7))',
-        pop_items = {2895}, --Oversized Sock
-      }
-    },
-  }
+	name = "Briareus",
+	pops = { {
+		id = 1482, --Dented Gigas Shield
+		type = "key item",
+		dropped_from = {
+			name = "Adamastor (North, (C-4))",
+			pops = { {
+				id = 2894, --Trophy Shield
+				type = "item",
+				dropped_from = { name = "GIGAS MOB TBC (POS)" }
+			} }
+		}
+	}, {
+		id = 1484, --Severed Gigas Collar
+		type = "key item",
+		dropped_from = {
+			name = "Grandgousier (South, (F-10))",
+			pops = { {
+				id = 2896, --Massive Armband
+				type = "item",
+				dropped_from = { name = "GIGAS MOB TBC (POS)" }
+			} }
+		}
+	}, {
+		id = 1483, --Warped Gigas Armband
+		type = "key item",
+		dropped_from = {
+			name = "Pantagruel (East, (F-7))",
+			pops = { {
+				id = 2895, --Oversized Sock
+				type = "item",
+				dropped_from = { name = "GIGAS MOB TBC (POS)" }
+			} }
+		}
+	} }
 }
-
---[[
-Adamastor
-  Trophy Shield
-    dented Gigas shield
-
-Grandgousier
-  Massive Armband
-    severed Gigas collar
-
-Pantagruel
-  Oversized Sock
-    warped Gigas armband
-]]
