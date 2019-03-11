@@ -349,8 +349,7 @@ describe("Empyrean Tracker", function()
 			trigger_event("addon command", "list")
 
 			assert.is.equal("Another Nm", sent_chats[2][2])
-			-- assert.not.equal("Third Nm", sent_chats[3][2])
-			-- when online, check what the negative assertion method is and use it.
+			assert.is_nil(sent_chats[3])
 		end)
 	end)
 end)
