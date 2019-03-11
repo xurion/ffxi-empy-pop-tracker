@@ -110,6 +110,14 @@ function ucwords(str)
 	return string.gsub(" " .. str, "%W%l", string.upper):sub(2)
 end
 
+function get_file_name(path)
+	return path:match("(.+).lua$")
+end
+
+function strip_hyphens(str)
+	return str:gsub('[%p]', ' ')
+end
+
 EmpyreanTracker.generate_info = function(nm, key_items, items)
 	local info = {
 		has_all_kis = true,
@@ -118,22 +126,19 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 	for _, key_item_data in pairs(nm.data) do
 		local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
 		local has_pop_ki = owns_item(key_item_data.id, key_items)
-		--     local pop_ki_color = color.success
+		-- local pop_ki_color = color.success
 		local mob_data = key_item_data.from
-		--     local pop_items = {}
-		--     local indent = "  "
+		local pop_items = {}
+		-- local indent = "  "
 
-		--     if mob_data.pop_items then
-		--       for _, pop_item in pairs(mob_data.pop_items) do
-		--         table.insert(
-		--           pop_items,
-		--           {
-		--             en = res.items[pop_item].en,
-		--             owned = owns_item(pop_item, items)
-		--           }
-		--         )
-		--       end
-		--     end
+		-- if mob_data.pops then
+		for _, pop_item in pairs(mob_data.pops) do
+			table.insert(pop_items, {
+				en = res.items[pop_item].en,
+				owned = owns_item(pop_item, items)
+			})
+		end
+		-- end
 
 		if not has_pop_ki then
 			-- pop_ki_color = color.danger
@@ -141,26 +146,40 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 		end
 
 		info.text = info.text .. "\n\n" .. mob_data.name
-		--     for _, pop_item in pairs(pop_items) do
-		--       local pop_item_color = color.danger
-		--       if pop_item.owned then
-		--         pop_item_color = color.success
-		--       end
-		--       text = text .. "\n" .. indent .. pop_item_color .. pop_item.en .. color.close
-		--     end
-		--     if #pop_items > 0 then
-		--       indent = indent .. indent
-		--     end
-		--     text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
+		for _, pop_item in pairs(pop_items) do
+			--   local pop_item_color = color.danger
+			--   if pop_item.owned then
+			--     pop_item_color = color.success
+			--   end
+			text = text .. "\n" .. indent .. pop_item_color .. pop_item.en .. color.close
+		end
+		-- if #pop_items > 0 then
+		--   indent = indent .. indent
+		-- end
+
+		-- text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
+		text = text .. "\n" .. pop_ki_name
 	end
 
 	--   needs to return a table of info:
-	--     - text
-	--     - has_all_kis
+	-- - text
+	-- - has_all_kis
 	--   set_text_bg(has_all_kis) --hoist this to the calling function
 	--   text_box:text(text) --hoist this to the calling function
 	--   text_box:visible(true) --hoist this to the calling function
 	return info
 end
+
+windower.register_event("addon command", function(arg)
+	windower.add_to_chat(8, "Trackable NMs:")
+	local files = io.popen("nms")
+	for _, file in pairs(files) do
+		file = get_file_name(file)
+		if file then
+			file = strip_hyphens(file)
+			windower.add_to_chat(8, ucwords(file))
+		end
+	end
+end)
 
 return EmpyreanTracker
