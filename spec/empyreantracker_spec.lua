@@ -174,70 +174,60 @@ describe("Empyrean Tracker", function()
 		assert.are.same("briareus", config.load.calls[1].vals[1].tracking)
 	end)
 
-	-- describe("generate_info(nm, key_items, items)", function()
-	-- 	it(
-	-- 		"returns a table with a has_all_kis property set to false when the key_items arg does not contain all of the entries of the nm arg",
-	-- 		function()
-	-- 			local addon = get_addon()
-	-- 			local nm = {
-	-- 				name = "Main Mob",
-	-- 				data = { {
-	-- 					id = 2,
-	-- 					from = { name = "Sub Mob A" }
-	-- 				}, {
-	-- 					id = 3,
-	-- 					from = { name = "Sub Mob B" }
-	-- 				} }
-	-- 			}
-	-- 			local key_items = { 1, 2 }
+	describe("generate_info(nm, key_items, items)", function()
+		it("throws an error if the nm arg is not a table", function()
+			local addon = get_addon()
 
-	-- 			local result = addon.generate_info(nm, key_items, {})
+			assert.has_error(function()
+				addon.generate_info(nil, {}, {})
+			end, "generate_info requires the nm arg to be a table")
+		end)
 
-	-- 			assert.equal(false, result.has_all_kis)
-	-- 		end
-	-- 	)
+		it("returns a table with a has_all_kis property set to false when the key_items arg does not contain all of the entries of the nm arg", function()
+			local addon = get_addon()
+			nm_data.pops = {{
+				id = 1,
+			}, {
+				id = 2
+			}, {
+				id = 3
+			}}
+			local key_items = { 1, 3 } --missing KI 2
 
-	-- 	it(
-	-- 		"returns a table with a has_all_kis property set to true when the key_items arg contains all of the entries of the nm arg",
-	-- 		function()
-	-- 			local addon = get_addon()
-	-- 			local nm = {
-	-- 				name = "Main Mob",
-	-- 				data = { {
-	-- 					id = 2,
-	-- 					from = { name = "Sub Mob A" }
-	-- 				}, {
-	-- 					id = 3,
-	-- 					from = { name = "Sub Mob B" }
-	-- 				} }
-	-- 			}
-	-- 			local key_items = { 2, 3 }
+			local result = addon.generate_info(nm_data, key_items, {})
 
-	-- 			local result = addon.generate_info(nm, key_items, {})
+			assert.equal(false, result.has_all_kis)
+		end)
 
-	-- 			assert.equal(true, result.has_all_kis)
-	-- 		end
-	-- 	)
+		it("returns a table with a has_all_kis property set to true when the key_items arg contains all of the entries of the nm arg", function()
+			local addon = get_addon()
+			local nm = {
+				name = "Main NM",
+				pops = { {
+					id = 1
+				}, {
+					id = 2
+				}, {
+					id = 3
+				} }
+			}
+			local key_items = { 1, 2, 3 }
 
-	-- 	it(
-	-- 		"returns a table with a text property that starts with the name from the nm arg",
-	-- 		function()
-	-- 			local addon = get_addon()
-	-- 			local nm = {
-	-- 				name = "Bennu",
-	-- 				data = { {
-	-- 					id = 1,
-	-- 					from = { name = "Sub Mob A" }
-	-- 				} }
-	-- 			}
-	-- 			local key_items = {}
+			local result = addon.generate_info(nm, key_items, {})
 
-	-- 			local result = addon.generate_info(nm, {}, {})
-	-- 			local lines = get_lines_from_string(result.text)
+			assert.equal(true, result.has_all_kis)
+		end)
 
-	-- 			assert.equal("Bennu", lines[1])
-	-- 		end
-	-- 	)
+		it("returns a table with a text property that starts with the name from the nm arg", function()
+			local addon = get_addon()
+			local key_items = {}
+			nm_data.name = "Bennu"
+
+			local result = addon.generate_info(nm_data, {}, {})
+			local lines = get_lines_from_string(result.text)
+
+			assert.equal("Bennu", lines[1])
+		end)
 
 	-- 	it(
 	-- 		"returns a table with a text property that contains the name of the nm that drops the key item in the nm arg",
@@ -278,7 +268,7 @@ describe("Empyrean Tracker", function()
 	-- 			assert.equal("Bennu pop item", lines[3])
 	-- 		end
 	-- 	)
-	-- end)
+	end)
 
 	describe("list command", function()
 		it('sends "Trackable NMs:" as the first chat in chat mode 8', function()

@@ -119,54 +119,59 @@ function strip_hyphens(str)
 end
 
 EmpyreanTracker.generate_info = function(nm, key_items, items)
+	if nm == nil then
+		error('generate_info requires the nm arg to be a table')
+	end
+
 	local info = {
 		has_all_kis = true,
 		text = ucwords(nm.name)
 	}
-	for _, key_item_data in pairs(nm.data) do
-		local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
-		local has_pop_ki = owns_item(key_item_data.id, key_items)
-		-- local pop_ki_color = color.success
-		local mob_data = key_item_data.from
-		local pop_items = {}
-		-- local indent = "  "
+	if nm.pops then
+		for _, key_item_data in pairs(nm.pops) do
+			-- local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
+			local has_pop_ki = owns_item(key_item_data.id, key_items)
+			-- local pop_ki_color = color.success
+			-- local mob_data = key_item_data.from
+			local pop_items = {}
+			-- local indent = "  "
 
-		-- if mob_data.pops then
-		for _, pop_item in pairs(mob_data.pops) do
-			table.insert(pop_items, {
-				en = res.items[pop_item].en,
-				owned = owns_item(pop_item, items)
-			})
+			-- if nm.pops then
+				for _, pop_item in pairs(nm.pops) do
+					table.insert(pop_items, {
+					-- en = res.items[pop_item].en,
+					-- owned = owns_item(pop_item, items)
+					})
+				end
+			-- end
+
+			if not has_pop_ki then
+		-- 		-- pop_ki_color = color.danger
+				info.has_all_kis = false
+			end
+
+		-- 	info.text = info.text .. "\n\n" .. mob_data.name
+		-- 	for _, pop_item in pairs(pop_items) do
+		-- 		--   local pop_item_color = color.danger
+		-- 		--   if pop_item.owned then
+		-- 		--     pop_item_color = color.success
+		-- 		--   end
+		-- 		text = text .. "\n" .. indent .. pop_item_color .. pop_item.en .. color.close
+		-- 	end
+		-- 	-- if #pop_items > 0 then
+		-- 	--   indent = indent .. indent
+		-- 	-- end
+
+		-- 	-- text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
+		-- 	text = text .. "\n" .. pop_ki_name
 		end
-		-- end
-
-		if not has_pop_ki then
-			-- pop_ki_color = color.danger
-			info.has_all_kis = false
-		end
-
-		info.text = info.text .. "\n\n" .. mob_data.name
-		for _, pop_item in pairs(pop_items) do
-			--   local pop_item_color = color.danger
-			--   if pop_item.owned then
-			--     pop_item_color = color.success
-			--   end
-			text = text .. "\n" .. indent .. pop_item_color .. pop_item.en .. color.close
-		end
-		-- if #pop_items > 0 then
-		--   indent = indent .. indent
-		-- end
-
-		-- text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
-		text = text .. "\n" .. pop_ki_name
 	end
 
-	--   needs to return a table of info:
-	-- - text
-	-- - has_all_kis
-	--   set_text_bg(has_all_kis) --hoist this to the calling function
-	--   text_box:text(text) --hoist this to the calling function
-	--   text_box:visible(true) --hoist this to the calling function
+	-- --   needs to return a table of info:
+	-- -- - text
+	-- --   set_text_bg(has_all_kis) --hoist this to the calling function
+	-- --   text_box:text(text) --hoist this to the calling function
+	-- --   text_box:visible(true) --hoist this to the calling function
 	return info
 end
 
