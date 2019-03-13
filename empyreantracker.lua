@@ -129,12 +129,12 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 	}
 	if nm.pops then
 		for _, key_item_data in pairs(nm.pops) do
-			-- local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
+			local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
 			local has_pop_ki = owns_item(key_item_data.id, key_items)
 			-- local pop_ki_color = color.success
-			-- local mob_data = key_item_data.from
+			local mob_data = key_item_data.dropped_from
 			local pop_items = {}
-			-- local indent = "  "
+			local indent = "  "
 
 			-- if nm.pops then
 				for _, pop_item in pairs(nm.pops) do
@@ -150,7 +150,7 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 				info.has_all_kis = false
 			end
 
-		-- 	info.text = info.text .. "\n\n" .. mob_data.name
+			info.text = info.text .. "\n\n" .. mob_data.name
 		-- 	for _, pop_item in pairs(pop_items) do
 		-- 		--   local pop_item_color = color.danger
 		-- 		--   if pop_item.owned then
@@ -164,6 +164,7 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 
 		-- 	-- text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
 		-- 	text = text .. "\n" .. pop_ki_name
+			info.text = info.text .. "\n  " .. pop_ki_name
 		end
 	end
 

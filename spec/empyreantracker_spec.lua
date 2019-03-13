@@ -187,10 +187,13 @@ describe("Empyrean Tracker", function()
 			local addon = get_addon()
 			nm_data.pops = {{
 				id = 1,
+				dropped_from = { name = 'a' }
 			}, {
-				id = 2
+				id = 2,
+				dropped_from = { name = 'b' }
 			}, {
-				id = 3
+				id = 3,
+				dropped_from = { name = 'c' }
 			}}
 			local key_items = { 1, 3 } --missing KI 2
 
@@ -201,19 +204,19 @@ describe("Empyrean Tracker", function()
 
 		it("returns a table with a has_all_kis property set to true when the key_items arg contains all of the entries of the nm arg", function()
 			local addon = get_addon()
-			local nm = {
-				name = "Main NM",
-				pops = { {
-					id = 1
-				}, {
-					id = 2
-				}, {
-					id = 3
-				} }
-			}
+			nm_data.pops = {{
+				id = 1,
+				dropped_from = { name = 'a' }
+			}, {
+				id = 2,
+				dropped_from = { name = 'b' }
+			}, {
+				id = 3,
+				dropped_from = { name = 'c' }
+			}}
 			local key_items = { 1, 2, 3 }
 
-			local result = addon.generate_info(nm, key_items, {})
+			local result = addon.generate_info(nm_data, key_items, {})
 
 			assert.equal(true, result.has_all_kis)
 		end)
@@ -224,50 +227,64 @@ describe("Empyrean Tracker", function()
 			nm_data.name = "Bennu"
 
 			local result = addon.generate_info(nm_data, {}, {})
-			local lines = get_lines_from_string(result.text)
 
+			local lines = get_lines_from_string(result.text)
 			assert.equal("Bennu", lines[1])
 		end)
 
-	-- 	it(
-	-- 		"returns a table with a text property that contains the name of the nm that drops the key item in the nm arg",
-	-- 		function()
-	-- 			local addon = get_addon()
-	-- 			local nm = {
-	-- 				name = "Bennu",
-	-- 				data = { {
-	-- 					id = 1,
-	-- 					from = { name = "Bennu Sub Mob" }
-	-- 				} }
-	-- 			}
+		it("returns a table with a text property that contains a spacer line followed by the name of the nm that drops the key item in the nm arg", function()
+			local addon = get_addon()
+			nm_data.pops[1].dropped_from = { name = "Sub Mob" }
 
-	-- 			local result = addon.generate_info(nm, {}, {})
+			local result = addon.generate_info(nm_data, {}, {})
 
-	-- 			local lines = get_lines_from_string(result.text)
-	-- 			assert.equal("Bennu Sub Mob", lines[2])
-	-- 		end
-	-- 	)
+			local lines = get_lines_from_string(result.text)
+			assert.equal("", lines[2])
+			assert.equal("Sub Mob", lines[3])
+		end)
 
-	-- 	it(
-	-- 		"returns a table with a text property that contains the name of the key item the nm drops in the nm arg",
-	-- 		function()
-	-- 			resources.key_items[1].en = "Bennu pop item"
-	-- 			local addon = get_addon()
+		it("returns a table with a text property that contains the name of the key item the nm drops in the nm arg", function()
+			resources.key_items[1].en = "Bennu Pop KI"
+			local addon = get_addon()
+			nm_data.pops = {{
+				id = 1,
+				dropped_from = { name = "Bennu Sub NM" }
+			}}
 
-	-- 			local data = {
-	-- 				name = "Bennu",
-	-- 				pops = { {
-	-- 					id = 1,
-	-- 					dropped_from = { name = "Bennu Sub NM" }
-	-- 				} }
-	-- 			}
+			local result = addon.generate_info(nm_data, {}, {})
 
-	-- 			local result = addon.generate_info(nm, {}, {})
+			local lines = get_lines_from_string(result.text)
+			assert.equal("Bennu Pop KI", strip_indent_from_string(lines[4]))
+		end)
 
-	-- 			local lines = get_lines_from_string(result.text)
-	-- 			assert.equal("Bennu pop item", lines[3])
-	-- 		end
-	-- 	)
+		it("returns a table with a text property that contains the capitalised name of the key item the nm drops in the nm arg", function()
+			resources.key_items[1].en = "the pop key item"
+			local addon = get_addon()
+			nm_data.pops = {{
+				id = 1,
+				dropped_from = { name = "NM" }
+			}}
+
+			local result = addon.generate_info(nm_data, {}, {})
+
+			local lines = get_lines_from_string(result.text)
+			assert.equal("The Pop Key Item", strip_indent_from_string(lines[4]))
+		end)
+
+		it("returns a table with a text property that contains the indented name of the key item the nm drops in the nm arg", function()
+			resources.key_items[1].en = "Indented Pop KI"
+			local addon = get_addon()
+			nm_data.pops = {{
+				id = 1,
+				dropped_from = { name = "NM" }
+			}}
+
+			local result = addon.generate_info(nm_data, {}, {})
+
+			local lines = get_lines_from_string(result.text)
+			local indent = get_indent_from_string(lines[4])
+			assert.equal(2, #indent)
+		end)
 	end)
 
 	describe("list command", function()
@@ -346,10 +363,18 @@ end)
 
 function get_lines_from_string(str)
 	local lines = {}
-	for line in str:gmatch("([^\r\n]+)") do
+	for line in str:gmatch("([^\r\n]*)") do
 		table.insert(lines, line)
 	end
 	return lines
+end
+
+function get_indent_from_string(str)
+	return str:match("^(%s*)")
+end
+
+function strip_indent_from_string(str) 
+	return str:match("^%s*(.+)")
 end
 
 function print_r(t)
