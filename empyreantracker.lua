@@ -118,6 +118,27 @@ function strip_hyphens(str)
 	return str:gsub('[%p]', ' ')
 end
 
+function get_indent(depth)
+	return string.rep("  ", depth)
+end
+
+function generate_text(data, depth)
+	local text = depth == 1 and data.name .. "\n" or ""
+	for _, pop in pairs(data.pops) do
+		local ki_resource = res.key_items[pop.id]
+		local pop_ki_name = 'Unknown KI'
+		if ki_resource then
+			pop_ki_name = ucwords(ki_resource.en)
+		end
+		
+		text = text .. "\n" .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. pop_ki_name
+		if pop.dropped_from.pops then
+			text = text .. generate_text(pop.dropped_from, depth + 1)
+		end
+	end
+	return text
+end
+
 EmpyreanTracker.generate_info = function(nm, key_items, items)
 	if nm == nil then
 		error('generate_info requires the nm arg to be a table')
@@ -125,32 +146,31 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 
 	local info = {
 		has_all_kis = true,
-		text = ucwords(nm.name)
+		text = ""
 	}
+
 	if nm.pops then
 		for _, key_item_data in pairs(nm.pops) do
-			local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
+			-- local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
 			local has_pop_ki = owns_item(key_item_data.id, key_items)
 			-- local pop_ki_color = color.success
 			local mob_data = key_item_data.dropped_from
-			local pop_items = {}
+			--local pop_items = {}
 			local indent = "  "
 
-			-- if nm.pops then
-				for _, pop_item in pairs(nm.pops) do
-					table.insert(pop_items, {
-					-- en = res.items[pop_item].en,
-					-- owned = owns_item(pop_item, items)
-					})
-				end
-			-- end
+			--for _, pop_item in pairs(nm.pops) do
+				--table.insert(pop_items, {
+				-- en = res.items[pop_item].en,
+				-- owned = owns_item(pop_item, items)
+				--})
+			--end
 
 			if not has_pop_ki then
 		-- 		-- pop_ki_color = color.danger
 				info.has_all_kis = false
 			end
 
-			info.text = info.text .. "\n\n" .. mob_data.name
+			info.text = generate_text(nm, 1)
 		-- 	for _, pop_item in pairs(pop_items) do
 		-- 		--   local pop_item_color = color.danger
 		-- 		--   if pop_item.owned then
@@ -158,18 +178,16 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 		-- 		--   end
 		-- 		text = text .. "\n" .. indent .. pop_item_color .. pop_item.en .. color.close
 		-- 	end
+
 		-- 	-- if #pop_items > 0 then
 		-- 	--   indent = indent .. indent
 		-- 	-- end
 
 		-- 	-- text = text .. "\n" .. indent .. pop_ki_color .. pop_ki_name .. color.close
-		-- 	text = text .. "\n" .. pop_ki_name
-			info.text = info.text .. "\n  " .. pop_ki_name
+			-- info.text = info.text .. "\n  " .. pop_ki_name
 		end
 	end
 
-	-- --   needs to return a table of info:
-	-- -- - text
 	-- --   set_text_bg(has_all_kis) --hoist this to the calling function
 	-- --   text_box:text(text) --hoist this to the calling function
 	-- --   text_box:visible(true) --hoist this to the calling function

@@ -49,20 +49,22 @@ describe("Empyrean Tracker", function()
 				id = 1,
 				type = "key item",
 				dropped_from = {
-					name = "Mock NM Sub A",
+					name = "Mock Sub NM",
 					pops = { {
-						id = 2, --Jaculus Wing
+						id = 1,
 						type = "item",
-						dropped_from = "Jaculus (Timed, 10-15 mins, (I-8/I-9))"
+						dropped_from = { name = "Jaculus (Timed, 10-15 mins, (I-8/I-9))" }
 					}, {
-						id = 3261, --Minaruja Skull
+						id = 2,
 						type = "item",
-						dropped_from = "Minaruja (Forced, (I-9))",
-						pops = { {
-							id = 3267, --Pursuer's Wing
-							type = "item",
-							dropped_from = "Faunus Wyvern (I-9/I-10)"
-						} }
+						dropped_from = {
+							name = "Minaruja (Forced, (I-9))",
+							pops = { {
+								id = 3,
+								type = "item",
+								dropped_from = { name = "Faunus Wyvern (I-9/I-10)" }
+							} }
+						} 
 					} }
 				}
 			} }
@@ -284,6 +286,20 @@ describe("Empyrean Tracker", function()
 			local lines = get_lines_from_string(result.text)
 			local indent = get_indent_from_string(lines[4])
 			assert.equal(2, #indent)
+		end)
+
+		it('returns a table with a text property that contains the name of the key item as "Unknown KI" if the KI ID is not found in Windower Resources', function()
+			resources.key_items[10] = nil
+			local addon = get_addon()
+			nm_data.pops = {{
+				id = 10,
+				dropped_from = { name = "NM" }
+			}}
+
+			local result = addon.generate_info(nm_data, {}, {})
+
+			local lines = get_lines_from_string(result.text)
+			assert.equal("Unknown KI", strip_indent_from_string(lines[4]))
 		end)
 	end)
 
