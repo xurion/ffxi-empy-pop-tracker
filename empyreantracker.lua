@@ -56,35 +56,6 @@ text_box = texts.new(settings.text, settings)
 
 -- load_tracking_data(tracking)
 
--- windower.register_event(
---   "load",
---   "incoming text",
---   "remove item",
---   function()
---     if tracking then
---       local items = windower.ffxi.get_items().inventory
---       local key_items = windower.ffxi.get_key_items()
---       regenerate_text(items, key_items)
---     end
---   end
--- )
-
--- windower.register_event(
---   "addon command",
---   function(command, arg)
---     if command == "track" and arg then
---       if not file.exists("nms/" .. arg .. ".lua") then
---         print("Unknown NM: " .. arg)
---       else
---         tracking = arg
---         settings.tracking = arg
---         load_tracking_data(tracking)
---         config.save(settings)
---       end
---     end
---   end
--- )
-
 -- function set_text_bg(has_all_kis)
 --   if has_all_kis then
 --     text_box:bg_color(0, 75, 0)
@@ -151,7 +122,6 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 
 	if nm.pops then
 		for _, key_item_data in pairs(nm.pops) do
-			-- local pop_ki_name = ucwords(res.key_items[key_item_data.id].en)
 			local has_pop_ki = owns_item(key_item_data.id, key_items)
 			-- local pop_ki_color = color.success
 			local mob_data = key_item_data.dropped_from
@@ -194,16 +164,45 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 	return info
 end
 
-windower.register_event("addon command", function(arg)
-	windower.add_to_chat(8, "Trackable NMs:")
-	local files = io.popen("nms")
-	for _, file in pairs(files) do
-		file = get_file_name(file)
-		if file then
-			file = strip_hyphens(file)
-			windower.add_to_chat(8, ucwords(file))
+windower.register_event("addon command", function(command, arg)
+	if command == 'track' and arg then
+		error('Unknown NM: ' .. arg .. '. Make sure you have the nms/' .. arg .. '.lua file')
+	else
+		windower.add_to_chat(8, "Trackable NMs:")
+		local files = io.popen("nms")
+		for _, file in pairs(files) do
+			file = get_file_name(file)
+			if file then
+				file = strip_hyphens(file)
+				windower.add_to_chat(8, ucwords(file))
+			end
 		end
 	end
 end)
+
+-- windower.register_event("addon command", function(command, arg)
+-- 	if command == "track" and arg then
+-- 		if not file.exists("nms/" .. arg .. ".lua") then
+-- 			print("Unknown NM: " .. arg)
+-- 		else
+-- 			settings.tracking = arg
+-- 			load_tracking_data(settings.tracking)
+-- 			config.save(settings)
+-- 		end
+-- 	end
+-- end)
+
+-- windower.register_event(
+--   "load",
+--   "incoming text",
+--   "remove item",
+--   function()
+--     if tracking then
+--       local items = windower.ffxi.get_items().inventory
+--       local key_items = windower.ffxi.get_key_items()
+--       regenerate_text(items, key_items)
+--     end
+--   end
+-- )
 
 return EmpyreanTracker

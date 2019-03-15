@@ -375,6 +375,51 @@ describe("Empyrean Tracker", function()
 			assert.is_nil(sent_chats[3])
 		end)
 	end)
+
+	describe("track command", function()
+		it('throws an error if the given nm arg does not match that of a valid nm data file', function()
+			local addon = get_addon()
+			local files = { "not-xurion.txt" }
+
+			stub(io, "popen", function(arg)
+				if arg == "nms" then
+					return files
+				else
+					return {}
+				end
+			end)
+
+			assert.has_error(function()
+				trigger_event("addon command", "track", "xurion")
+			end, "Unknown NM: xurion. Make sure you have the nms/xurion.lua file")
+		end)
+
+		it('does not throw an error if the given nm arg does not match that of a valid nm data file but the command is not "track"', function()
+			local addon = get_addon()
+			local files = { "not-xurion.txt" }
+
+			stub(io, "popen", function(arg)
+				if arg == "nms" then
+					return files
+				else
+					return {}
+				end
+			end)
+
+			assert.has_no_error(function()
+				trigger_event("addon command", "not-track", "xurion")
+			end, "Unknown NM: xurion. Make sure you have the nms/xurion.lua file")
+		end)
+
+		-- it('sends "Now tracking [nm]" as the first chat in chat mode 8', function()
+		-- 	local addon = get_addon()
+
+		-- 	trigger_event("addon command", "track")
+
+		-- 	assert.is.equal("Another Nm", sent_chats[2][2])
+		-- 	assert.is_nil(sent_chats[3])
+		-- end)
+	end)
 end)
 
 function get_lines_from_string(str)
