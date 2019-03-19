@@ -4,20 +4,18 @@ package.path = "./?.lua;./spec/mock/?.lua"
 
 local match = require("luassert.match")
 
--- Include mock libs
-config = require("config")
-texts = require("texts")
 resources = nil
 
 describe("Empyrean Tracker", function()
 	local get_addon = function()
-		package.loaded["empyreantracker"] = nil
+		package.loaded.empyreantracker = nil
 		return require("empyreantracker")
 	end
 
 	local sent_chats
 	local registered_events
 	local nm_data
+	local nm_files
 
 	local trigger_event = function(event, ...)
 		for _, v in pairs(registered_events[event]) do
@@ -29,6 +27,10 @@ describe("Empyrean Tracker", function()
 		_G._addon = {}
 		package.loaded.empyreantracker = nil
 		package.loaded.resources = nil
+		package.loaded.files = nil
+		config = require("config")
+		texts = require("texts")
+		file = require("files")
 		resources = require("resources")
 		registered_events = {}
 		sent_chats = {}
@@ -69,6 +71,27 @@ describe("Empyrean Tracker", function()
 				}
 			} }
 		}
+		nm_files = { "mock.lua" }
+
+		stub(io, "popen", function(arg)
+			if arg == "nms" then
+				return nm_files
+			else
+				return {}
+			end
+		end)
+
+		stub(file, 'exists', function(file_name)
+			local exists = false
+			for _, nm_file in pairs(nm_files) do
+				local file_location = 'nms/' .. nm_file
+				if file_location == file_name then
+					exists = true
+					break
+				end
+			end
+			return exists
+		end)
 	end)
 
 	it("sets the _addon name to Empyrean Tracker", function()
@@ -174,6 +197,25 @@ describe("Empyrean Tracker", function()
 		get_addon()
 
 		assert.are.same("briareus", config.load.calls[1].vals[1].tracking)
+	end)
+
+	describe("add_to_chat(message)", function()
+		it("throws an error if the message arg is not a string", function()
+			local addon = get_addon()
+
+			assert.has_error(function()
+				addon.add_to_chat({})
+			end, "add_to_chat requires the message arg to be a string")
+		end)
+
+		it("passes the given message arg to windower.add_to_chat under mode 8", function()
+			local addon = get_addon()
+			spy.on(_G.windower, 'add_to_chat')
+
+			addon.add_to_chat('Sup')
+
+			assert.spy(_G.windower.add_to_chat).was_called_with(8, 'Sup')
+		end)
 	end)
 
 	describe("generate_info(nm, key_items, items)", function()
@@ -304,50 +346,32 @@ describe("Empyrean Tracker", function()
 	end)
 
 	describe("list command", function()
-		it('sends "Trackable NMs:" as the first chat in chat mode 8', function()
+		it('sends "Trackable NMs:" as the first message to the chat log', function()
 			local addon = get_addon()
-			local files = { "nm.lua" }
-			stub(io, "popen", function(arg)
-				return files
-			end)
+			nm_files = { "nm.lua" }
+			spy.on(addon, 'add_to_chat')
 
 			trigger_event("addon command", "list")
 
-			assert.is.equal(8, sent_chats[1][1])
-			assert.is.equal("Trackable NMs:", sent_chats[1][2])
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal("Trackable NMs:", addon.add_to_chat.calls[1].vals[1])
 		end)
 
 		it("lists the files in the nms directory with capitalised first letter and no file extension", function()
 			local addon = get_addon()
-			local files = { "nm.lua", "another.lua" }
-
-			stub(io, "popen", function(arg)
-				if arg == "nms" then
-					return files
-				else
-					return {}
-				end
-			end)
+			nm_files = { "nm.lua", "another.lua" }
+			spy.on(addon, 'add_to_chat')
 
 			trigger_event("addon command", "list")
 
-			assert.is.equal(8, sent_chats[2][1])
-			assert.is.equal("Nm", sent_chats[2][2])
-			assert.is.equal(8, sent_chats[3][1])
-			assert.is.equal("Another", sent_chats[3][2])
+			assert.spy(addon.add_to_chat).was_called()
+			assert.is.equal("Nm", addon.add_to_chat.calls[2].vals[1])
+			assert.is.equal("Another", addon.add_to_chat.calls[3].vals[1])
 		end)
 
 		it("lists the files in the nms directory with capitalised first letter and no file extension", function()
 			local addon = get_addon()
-			local files = { "nm.lua", "another-nm.lua" }
-
-			stub(io, "popen", function(arg)
-				if arg == "nms" then
-					return files
-				else
-					return {}
-				end
-			end)
+			nm_files = { "nm.lua", "another-nm.lua" }
 
 			trigger_event("addon command", "list")
 
@@ -359,15 +383,7 @@ describe("Empyrean Tracker", function()
 
 		it("does not list files in the nms directory that are not .lua", function()
 			local addon = get_addon()
-			local files = { "nm.txt", "another-nm.lua", "third-nm" }
-
-			stub(io, "popen", function(arg)
-				if arg == "nms" then
-					return files
-				else
-					return {}
-				end
-			end)
+			nm_files = { "nm.txt", "another-nm.lua", "third-nm" }
 
 			trigger_event("addon command", "list")
 
@@ -379,46 +395,54 @@ describe("Empyrean Tracker", function()
 	describe("track command", function()
 		it('throws an error if the given nm arg does not match that of a valid nm data file', function()
 			local addon = get_addon()
-			local files = { "not-xurion.txt" }
-
-			stub(io, "popen", function(arg)
-				if arg == "nms" then
-					return files
-				else
-					return {}
-				end
-			end)
+			nm_files = { "not-xurion.lua" }
 
 			assert.has_error(function()
-				trigger_event("addon command", "track", "xurion")
-			end, "Unknown NM: xurion. Make sure you have the nms/xurion.lua file")
+				trigger_event("addon command", "track", "Xurion")
+			end, "Unknown NM: Xurion. Make sure you have the nms/xurion.lua file")
 		end)
 
 		it('does not throw an error if the given nm arg does not match that of a valid nm data file but the command is not "track"', function()
 			local addon = get_addon()
-			local files = { "not-xurion.txt" }
-
-			stub(io, "popen", function(arg)
-				if arg == "nms" then
-					return files
-				else
-					return {}
-				end
-			end)
+			nm_files = { "not-xurion.txt" }
 
 			assert.has_no_error(function()
 				trigger_event("addon command", "not-track", "xurion")
-			end, "Unknown NM: xurion. Make sure you have the nms/xurion.lua file")
+			end, "Unknown NM: Xurion. Make sure you have the nms/xurion.lua file")
 		end)
 
-		-- it('sends "Now tracking [nm]" as the first chat in chat mode 8', function()
-		-- 	local addon = get_addon()
+		it('sends "Now tracking: [nm name]" to the chat log', function()
+			local addon = get_addon()
+			nm_files = { "feanorsof.lua" }
+			spy.on(addon, 'add_to_chat')
 
-		-- 	trigger_event("addon command", "track")
+			trigger_event("addon command", "track", "Feanorsof")
 
-		-- 	assert.is.equal("Another Nm", sent_chats[2][2])
-		-- 	assert.is_nil(sent_chats[3])
-		-- end)
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal("Now tracking: Feanorsof", addon.add_to_chat.calls[1].vals[1])
+		end)
+
+		it('sends "Now tracking: [nm name]" to the chat log with the first capitalised first letter', function()
+			local addon = get_addon()
+			nm_files = { "feanorsof.lua" }
+			spy.on(addon, 'add_to_chat')
+
+			trigger_event("addon command", "track", "feanorsof")
+
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal("Now tracking: Feanorsof", addon.add_to_chat.calls[1].vals[1])
+		end)
+
+		it('sends "Now tracking: [nm name]" to the chat log even when there is an inconsitent case match', function()
+			local addon = get_addon()
+			nm_files = { "feanorsof.lua" }
+			spy.on(addon, 'add_to_chat')
+
+			trigger_event("addon command", "track", "FeAnOrSoF")
+
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal("Now tracking: Feanorsof", addon.add_to_chat.calls[1].vals[1])
+		end)
 	end)
 end)
 

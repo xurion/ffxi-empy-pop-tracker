@@ -6,7 +6,7 @@ _addon.version = "1.0.0"
 config = require("config")
 texts = require("texts")
 res = require("resources")
--- file = require("files")
+file = require("files")
 
 local EmpyreanTracker = {}
 
@@ -110,6 +110,14 @@ function generate_text(data, depth)
 	return text
 end
 
+EmpyreanTracker.add_to_chat = function(message)
+	if type(message) ~= 'string' then
+		error('add_to_chat requires the message arg to be a string')
+	end
+
+	windower.add_to_chat(8, message)
+end
+
 EmpyreanTracker.generate_info = function(nm, key_items, items)
 	if nm == nil then
 		error('generate_info requires the nm arg to be a table')
@@ -164,28 +172,33 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 	return info
 end
 
-windower.register_event("addon command", function(command, arg)
-	if command == 'track' and arg then
-		error('Unknown NM: ' .. arg .. '. Make sure you have the nms/' .. arg .. '.lua file')
+windower.register_event("addon command", function(command, nm_name)
+	if command == 'track' then
+		local lower_nm_name = nm_name:lower()
+		if not file.exists("nms/" .. lower_nm_name .. ".lua") then
+			error('Unknown NM: ' .. nm_name .. '. Make sure you have the nms/' .. lower_nm_name .. '.lua file')
+		else
+			EmpyreanTracker.add_to_chat("Now tracking: " .. ucwords(lower_nm_name))
+		end
 	else
-		windower.add_to_chat(8, "Trackable NMs:")
 		local files = io.popen("nms")
+		EmpyreanTracker.add_to_chat("Trackable NMs:")
 		for _, file in pairs(files) do
 			file = get_file_name(file)
 			if file then
 				file = strip_hyphens(file)
-				windower.add_to_chat(8, ucwords(file))
+				EmpyreanTracker.add_to_chat(ucwords(file))
 			end
 		end
 	end
 end)
 
--- windower.register_event("addon command", function(command, arg)
--- 	if command == "track" and arg then
--- 		if not file.exists("nms/" .. arg .. ".lua") then
--- 			print("Unknown NM: " .. arg)
+-- windower.register_event("addon command", function(command, nm_name)
+-- 	if command == "track" and nm_name then
+-- 		if not file.exists("nms/" .. nm_name .. ".lua") then
+-- 			print("Unknown NM: " .. nm_name)
 -- 		else
--- 			settings.tracking = arg
+-- 			settings.tracking = nm_name
 -- 			load_tracking_data(settings.tracking)
 -- 			config.save(settings)
 -- 		end
