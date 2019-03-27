@@ -1,14 +1,12 @@
--- Empyrean Tracker Unit tests
-
 package.path = "./?.lua;./spec/mock/?.lua"
 
 local match = require("luassert.match")
+local any = match._
 
 resources = nil
 
 describe("Empyrean Tracker", function()
 	local get_addon = function()
-		package.loaded.empyreantracker = nil
 		return require("empyreantracker")
 	end
 
@@ -16,9 +14,16 @@ describe("Empyrean Tracker", function()
 	local registered_events
 	local nm_data
 	local nm_files
+	local character_kis
+	local character_items
 
-	local trigger_event = function(event, ...)
-		for _, v in pairs(registered_events[event]) do
+	local trigger_event = function(event_name, ...)
+		local events = registered_events[event_name]
+		if not events then
+			error('Event "' .. event_name .. '" not registered and cannot be triggered')
+		end
+
+		for _, v in pairs(events) do
 			v(...)
 		end
 	end
@@ -34,6 +39,8 @@ describe("Empyrean Tracker", function()
 		resources = require("resources")
 		registered_events = {}
 		sent_chats = {}
+		character_kis = {}
+		character_items = {}
 		_G.windower = {}
 		_G.windower.register_event = function(event, ...)
 			if registered_events[event] then
@@ -44,6 +51,15 @@ describe("Empyrean Tracker", function()
 		end
 		_G.windower.add_to_chat = function(mode, text)
 			table.insert(sent_chats, { mode, text })
+		end
+		_G.windower.ffxi = {}
+		_G.windower.ffxi.get_key_items = function()
+			return character_kis
+		end
+		_G.windower.ffxi.get_items = function()
+			return {
+				inventory = character_items
+			}
 		end
 		nm_data = {
 			name = "Mock NM",
@@ -131,6 +147,27 @@ describe("Empyrean Tracker", function()
 		assert.stub(config.load).was.called(1)
 		assert.spy(texts.new).was.called_with(config_data.text, config_data)
 	end)
+
+	it("stores the settings from the config loader to EmpyreanTracker.settings", function()
+		local config_data = {
+			text = "text config",
+			other = "other config"
+		}
+		stub(config, "load", config_data)
+		
+		local addon = get_addon()
+
+		assert.equal(config_data, addon.settings)
+	end)
+
+-- 	it("sets the new instance of text as a reference on EmpyreanTracker", function()
+-- 		local new_text = {}
+-- 		stub(texts, "new", function() return new_text end)
+
+-- 		local addon = get_addon()
+-- print('empyreantracker_spec.lua:143', addon.text)
+-- 		assert.equal(new_text, addon.text)
+-- 	end)
 
 	it("sets a default text x and y setting of 0", function()
 		spy.on(config, "load")
@@ -442,6 +479,92 @@ describe("Empyrean Tracker", function()
 
 			assert.spy(addon.add_to_chat).was_called()
 			assert.equal("Now tracking: Feanorsof", addon.add_to_chat.calls[1].vals[1])
+		end)
+
+		it('sets the tracking setting to the lower case equivalent of the given nm name', function()
+			local addon = get_addon()
+			nm_files = { "laylina.lua" }
+
+			trigger_event("addon command", "track", "lAyLInA")
+
+			assert.equal("laylina", addon.settings.tracking)
+		end)
+	end)
+
+	describe("load command", function()
+		it('sets the text component as visible', function()
+			local addon = get_addon()
+			spy.on(addon.text, 'visible')
+
+			trigger_event("load")
+
+			assert.spy(addon.text.visible).was_called_with(addon.text, true)
+		end)
+
+		it('calls generate_info with the currently tracked NM', function()
+			local addon = get_addon()
+			addon.settings.tracking = 'leananshee'
+			spy.on(addon, 'generate_info')
+
+			trigger_event("load")
+
+			assert.spy(addon.generate_info).was_called_with('leananshee', any, any)
+		end)
+
+		it('calls generate_info with the characters key_items', function()
+			local addon = get_addon()
+			character_kis = {6}
+			spy.on(addon, 'generate_info')
+
+			trigger_event("load")
+
+			assert.spy(addon.generate_info).was_called_with(any, {6}, any)
+		end)
+
+		it('calls generate_info with the characters items from their inventory', function()
+			local addon = get_addon()
+			character_items = {44}
+			spy.on(addon, 'generate_info')
+
+			trigger_event("load")
+
+			assert.spy(addon.generate_info).was_called_with(any, any, {44})
+		end)
+
+		it('updates the text component with the tex property from generate_info', function()
+			local addon = get_addon()
+			stub(addon, 'generate_info', function()
+				return {text = 'generated info text'}
+			end)
+			spy.on(addon.text, 'update')
+
+			trigger_event("load")
+
+			assert.spy(addon.text.update).was_called_with(addon.text, 'generated info text')
+		end)
+
+		it('sets the text component background to green if generate_info states the character has all the KIs needed', function()
+			local addon = get_addon()
+			stub(addon, 'generate_info', function()
+				return {has_all_kis = true}
+			end)
+			spy.on(addon.text, 'bg_color')
+
+			trigger_event("load")
+
+			assert.spy(addon.text.bg_color).was_called_with(addon.text, 0, 75, 0)
+		end)
+
+		it('sets the text component background to black if generate_info states the character does have all the KIs needed', function()
+			local addon = get_addon()
+			stub(addon, 'generate_info', function()
+				return {has_all_kis = false}
+			end)
+			spy.on(addon.text, 'bg_color')
+
+			trigger_event("load")
+
+			assert.spy(addon.text.bg_color).was_called_with(addon.text, 0, 0, 0)
 		end)
 	end)
 end)

@@ -1,38 +1,41 @@
 local texts = {}
-function texts.new() return 'default mock' end
-function texts.update() return 'default mock' end
-function texts.clear() return 'default mock' end
-function texts.append() return 'default mock' end
-function texts.it() return 'default mock' end
-function texts.appendline() return 'default mock' end
-function texts.show() return 'default mock' end
-function texts.hide() return 'default mock' end
-function texts.visible() return 'default mock' end
-function texts.text() return 'default mock' end
-function texts.pos() return 'default mock' end
-function texts.pos_x() return 'default mock' end
-function texts.pos_y() return 'default mock' end
-function texts.extents() return 'default mock' end
-function texts.font() return 'default mock' end
-function texts.size() return 'default mock' end
-function texts.pad() return 'default mock' end
-function texts.color() return 'default mock' end
-function texts.alpha() return 'default mock' end
-function texts.transparency() return 'default mock' end
-function texts.right_justified() return 'default mock' end
-function texts.bottom_justified() return 'default mock' end
-function texts.italic() return 'default mock' end
-function texts.bold() return 'default mock' end
-function texts.bg_color() return 'default mock' end
-function texts.bg_visible() return 'default mock' end
-function texts.bg_alpha() return 'default mock' end
-function texts.bg_transparency() return 'default mock' end
-function texts.stroke_width() return 'default mock' end
-function texts.stroke_color() return 'default mock' end
-function texts.stroke_transparency() return 'default mock' end
-function texts.stroke_alpha() return 'default mock' end
-function texts.hover() return 'default mock' end
-function texts.destroy() return 'default mock' end
-function texts.register_event() return 'default mock' end
-function texts.unregister_event() return 'default mock' end
+function texts.new()
+  return {
+    ['update'] = function() end,
+    ['clear'] = function() end,
+    ['append'] = function() end,
+    ['it'] = function() end,
+    ['appendline'] = function() end,
+    ['show'] = function() end,
+    ['hide'] = function() end,
+    ['visible'] = function() end,
+    ['text'] = function() end,
+    ['pos'] = function() end,
+    ['pos_x'] = function() end,
+    ['pos_y'] = function() end,
+    ['extents'] = function() end,
+    ['font'] = function() end,
+    ['size'] = function() end,
+    ['pad'] = function() end,
+    ['color'] = function() end,
+    ['alpha'] = function() end,
+    ['transparency'] = function() end,
+    ['right_justified'] = function() end,
+    ['bottom_justified'] = function() end,
+    ['italic'] = function() end,
+    ['bold'] = function() end,
+    ['bg_color'] = function() end,
+    ['bg_visible'] = function() end,
+    ['bg_alpha'] = function() end,
+    ['bg_transparency'] = function() end,
+    ['stroke_width'] = function() end,
+    ['stroke_color'] = function() end,
+    ['stroke_transparency'] = function() end,
+    ['stroke_alpha'] = function() end,
+    ['hover'] = function() end,
+    ['destroy'] = function() end,
+    ['register_event'] = function() end,
+    ['unregister_event'] = function() end,
+  }
+end
 return texts

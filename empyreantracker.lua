@@ -32,8 +32,8 @@ local defaults = {
 	tracking = "briareus"
 }
 
-settings = config.load(defaults)
-text_box = texts.new(settings.text, settings)
+EmpyreanTracker.settings = config.load(defaults)
+EmpyreanTracker.text = texts.new(EmpyreanTracker.settings.text, EmpyreanTracker.settings)
 
 -- color = {}
 -- color.success = "\\cs(100,255,100)"
@@ -55,14 +55,6 @@ text_box = texts.new(settings.text, settings)
 -- end
 
 -- load_tracking_data(tracking)
-
--- function set_text_bg(has_all_kis)
---   if has_all_kis then
---     text_box:bg_color(0, 75, 0)
---   else
---     text_box:bg_color(0, 0, 0)
---   end
--- end
 
 function owns_item(id, items)
 	local owned = false
@@ -165,10 +157,6 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 			-- info.text = info.text .. "\n  " .. pop_ki_name
 		end
 	end
-
-	-- --   set_text_bg(has_all_kis) --hoist this to the calling function
-	-- --   text_box:text(text) --hoist this to the calling function
-	-- --   text_box:visible(true) --hoist this to the calling function
 	return info
 end
 
@@ -179,6 +167,7 @@ windower.register_event("addon command", function(command, nm_name)
 			error('Unknown NM: ' .. nm_name .. '. Make sure you have the nms/' .. lower_nm_name .. '.lua file')
 		else
 			EmpyreanTracker.add_to_chat("Now tracking: " .. ucwords(lower_nm_name))
+			EmpyreanTracker.settings.tracking = lower_nm_name
 		end
 	else
 		local files = io.popen("nms")
@@ -214,8 +203,24 @@ end)
 --       local items = windower.ffxi.get_items().inventory
 --       local key_items = windower.ffxi.get_key_items()
 --       regenerate_text(items, key_items)
+--       set_text_bg(has_all_kis) --hoist this to the calling function
+--       text_box:text(text) --hoist this to the calling function
+--       text_box:visible(true) --hoist this to the calling function
 --     end
 --   end
 -- )
+
+windower.register_event("load", function()
+	local key_items = windower.ffxi.get_key_items()
+	local inventory = windower.ffxi.get_items().inventory
+	EmpyreanTracker.text:visible(true)
+	local generated_info = EmpyreanTracker.generate_info(EmpyreanTracker.settings.tracking, key_items, inventory)
+	EmpyreanTracker.text:update(generated_info.text)
+	if generated_info.has_all_kis then
+		EmpyreanTracker.text:bg_color(0, 75, 0)
+	else
+		EmpyreanTracker.text:bg_color(0, 0, 0)
+	end
+end)
 
 return EmpyreanTracker
