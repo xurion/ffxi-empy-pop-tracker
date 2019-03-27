@@ -210,10 +210,9 @@ end)
 --   end
 -- )
 
-windower.register_event("load", function()
-	local key_items = windower.ffxi.get_key_items()
+EmpyreanTracker.update = function()
+local key_items = windower.ffxi.get_key_items()
 	local inventory = windower.ffxi.get_items().inventory
-	EmpyreanTracker.text:visible(true)
 	local generated_info = EmpyreanTracker.generate_info(EmpyreanTracker.settings.tracking, key_items, inventory)
 	EmpyreanTracker.text:update(generated_info.text)
 	if generated_info.has_all_kis then
@@ -221,6 +220,19 @@ windower.register_event("load", function()
 	else
 		EmpyreanTracker.text:bg_color(0, 0, 0)
 	end
+	EmpyreanTracker.text:visible(true)
+end
+
+windower.register_event('load', function()
+	EmpyreanTracker.update()
+end)
+
+windower.register_event('incoming text', function()
+	EmpyreanTracker.update()
+end)
+
+windower.register_event('remove item', function()
+	EmpyreanTracker.update()
 end)
 
 return EmpyreanTracker

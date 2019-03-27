@@ -491,12 +491,12 @@ describe("Empyrean Tracker", function()
 		end)
 	end)
 
-	describe("load command", function()
+	describe("update()", function()
 		it('sets the text component as visible', function()
 			local addon = get_addon()
 			spy.on(addon.text, 'visible')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.text.visible).was_called_with(addon.text, true)
 		end)
@@ -506,7 +506,7 @@ describe("Empyrean Tracker", function()
 			addon.settings.tracking = 'leananshee'
 			spy.on(addon, 'generate_info')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.generate_info).was_called_with('leananshee', any, any)
 		end)
@@ -516,7 +516,7 @@ describe("Empyrean Tracker", function()
 			character_kis = {6}
 			spy.on(addon, 'generate_info')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.generate_info).was_called_with(any, {6}, any)
 		end)
@@ -526,7 +526,7 @@ describe("Empyrean Tracker", function()
 			character_items = {44}
 			spy.on(addon, 'generate_info')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.generate_info).was_called_with(any, any, {44})
 		end)
@@ -538,7 +538,7 @@ describe("Empyrean Tracker", function()
 			end)
 			spy.on(addon.text, 'update')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.text.update).was_called_with(addon.text, 'generated info text')
 		end)
@@ -550,7 +550,7 @@ describe("Empyrean Tracker", function()
 			end)
 			spy.on(addon.text, 'bg_color')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.text.bg_color).was_called_with(addon.text, 0, 75, 0)
 		end)
@@ -562,9 +562,42 @@ describe("Empyrean Tracker", function()
 			end)
 			spy.on(addon.text, 'bg_color')
 
-			trigger_event("load")
+			addon.update()
 
 			assert.spy(addon.text.bg_color).was_called_with(addon.text, 0, 0, 0)
+		end)
+	end)
+
+	describe('load event', function()
+		it('calls the update function', function()
+			local addon = get_addon()
+			spy.on(addon, 'update')
+
+			trigger_event('load')
+
+			assert.spy(addon.update).was_called()
+		end)
+	end)
+
+	describe('incoming text event', function()
+		it('calls the update function', function()
+			local addon = get_addon()
+			spy.on(addon, 'update')
+
+			trigger_event('incoming text')
+
+			assert.spy(addon.update).was_called()
+		end)
+	end)
+
+	describe('remove item event', function()
+		it('calls the update function', function()
+			local addon = get_addon()
+			spy.on(addon, 'update')
+
+			trigger_event('remove item')
+
+			assert.spy(addon.update).was_called()
 		end)
 	end)
 end)
