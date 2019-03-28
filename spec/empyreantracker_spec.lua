@@ -42,11 +42,14 @@ describe("Empyrean Tracker", function()
 		character_kis = {}
 		character_items = {}
 		_G.windower = {}
-		_G.windower.register_event = function(event, ...)
-			if registered_events[event] then
-				table.insert(registered_events, ...)
-			else
-				registered_events[event] = { ... }
+		_G.windower.register_event = function(...)
+			local args = {...}
+			for i = 1, #args - 1, 1 do
+				if registered_events[args[i]] then
+					table.insert(registered_events[args[i]], args[#args])
+				else
+					registered_events[args[i]] = {args[#args]}
+				end
 			end
 		end
 		_G.windower.add_to_chat = function(mode, text)
@@ -531,7 +534,7 @@ describe("Empyrean Tracker", function()
 			assert.spy(addon.generate_info).was_called_with(any, any, {44})
 		end)
 
-		it('updates the text component with the tex property from generate_info', function()
+		it('updates the text component with the text property from generate_info', function()
 			local addon = get_addon()
 			stub(addon, 'generate_info', function()
 				return {text = 'generated info text'}
