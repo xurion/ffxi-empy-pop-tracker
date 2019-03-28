@@ -195,15 +195,7 @@ local key_items = windower.ffxi.get_key_items()
 	EmpyreanTracker.text:visible(true)
 end
 
-windower.register_event('load', function()
-	EmpyreanTracker.update()
-end)
-
-windower.register_event('incoming text', function()
-	EmpyreanTracker.update()
-end)
-
-windower.register_event('remove item', function()
+windower.register_event('load', 'incoming text', 'remove item', function()
 	EmpyreanTracker.update()
 end)
 
