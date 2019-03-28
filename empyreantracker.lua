@@ -182,34 +182,6 @@ windower.register_event("addon command", function(command, nm_name)
 	end
 end)
 
--- windower.register_event("addon command", function(command, nm_name)
--- 	if command == "track" and nm_name then
--- 		if not file.exists("nms/" .. nm_name .. ".lua") then
--- 			print("Unknown NM: " .. nm_name)
--- 		else
--- 			settings.tracking = nm_name
--- 			load_tracking_data(settings.tracking)
--- 			config.save(settings)
--- 		end
--- 	end
--- end)
-
--- windower.register_event(
---   "load",
---   "incoming text",
---   "remove item",
---   function()
---     if tracking then
---       local items = windower.ffxi.get_items().inventory
---       local key_items = windower.ffxi.get_key_items()
---       regenerate_text(items, key_items)
---       set_text_bg(has_all_kis) --hoist this to the calling function
---       text_box:text(text) --hoist this to the calling function
---       text_box:visible(true) --hoist this to the calling function
---     end
---   end
--- )
-
 EmpyreanTracker.update = function()
 local key_items = windower.ffxi.get_key_items()
 	local inventory = windower.ffxi.get_items().inventory
