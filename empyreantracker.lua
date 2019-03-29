@@ -160,14 +160,32 @@ EmpyreanTracker.generate_info = function(nm, key_items, items)
 	return info
 end
 
+function find_nm_files(search)
+	local matching_files = {}
+	local files = io.popen("nms")
+	for _, file in pairs(files) do
+		local result = string.match(file, '^(' .. search .. '.*).lua')
+		if (result) then
+			table.insert(matching_files, result)
+		end
+	end
+	return matching_files
+end
+
 windower.register_event("addon command", function(command, nm_name)
 	if command == 'track' then
 		local lower_nm_name = nm_name:lower()
-		if not file.exists("nms/" .. lower_nm_name .. ".lua") then
-			error('Unknown NM: ' .. nm_name .. '. Make sure you have the nms/' .. lower_nm_name .. '.lua file')
+		local matching_file_names = find_nm_files(lower_nm_name)
+		if #matching_file_names == 0 then
+			EmpyreanTracker.add_to_chat('Unable to find NMs using: "' .. nm_name .. '"')
+		elseif #matching_file_names > 1 then
+			EmpyreanTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_file_names .. ' files. Please be more explicit:')
+			for key, matching_file_name in pairs(matching_file_names) do
+				EmpyreanTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
+			end
 		else
-			EmpyreanTracker.add_to_chat("Now tracking: " .. ucwords(lower_nm_name))
-			EmpyreanTracker.settings.tracking = lower_nm_name
+			EmpyreanTracker.add_to_chat("Now tracking: " .. ucwords(matching_file_names[1]))
+			EmpyreanTracker.settings.tracking = matching_file_names[1]
 		end
 	else
 		local files = io.popen("nms")

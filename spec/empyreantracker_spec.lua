@@ -433,24 +433,6 @@ describe("Empyrean Tracker", function()
 	end)
 
 	describe("track command", function()
-		it('throws an error if the given nm arg does not match that of a valid nm data file', function()
-			local addon = get_addon()
-			nm_files = { "not-xurion.lua" }
-
-			assert.has_error(function()
-				trigger_event("addon command", "track", "Xurion")
-			end, "Unknown NM: Xurion. Make sure you have the nms/xurion.lua file")
-		end)
-
-		it('does not throw an error if the given nm arg does not match that of a valid nm data file but the command is not "track"', function()
-			local addon = get_addon()
-			nm_files = { "not-xurion.txt" }
-
-			assert.has_no_error(function()
-				trigger_event("addon command", "not-track", "xurion")
-			end, "Unknown NM: Xurion. Make sure you have the nms/xurion.lua file")
-		end)
-
 		it('sends "Now tracking: [nm name]" to the chat log', function()
 			local addon = get_addon()
 			nm_files = { "feanorsof.lua" }
@@ -491,6 +473,41 @@ describe("Empyrean Tracker", function()
 			trigger_event("addon command", "track", "lAyLInA")
 
 			assert.equal("laylina", addon.settings.tracking)
+		end)
+
+		it('sets the tracking setting to the lower case equivalent of the partially-matching given nm name', function()
+			local addon = get_addon()
+			nm_files = { "laylina.lua" }
+
+			trigger_event("addon command", "track", "lAy")
+
+			assert.equal("laylina", addon.settings.tracking)
+		end)
+
+		it('logs a message to the chat log when a partially-matching nm name matches two different files', function()
+			local addon = get_addon()
+			nm_files = { "laylina.lua", "laylin0rz.lua" }
+			spy.on(addon, 'add_to_chat')
+
+			trigger_event("addon command", "track", "lay")
+
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal('"lay" matches 2 files. Please be more explicit:', addon.add_to_chat.calls[1].vals[1])
+			assert.equal('  Match 1: Laylina', addon.add_to_chat.calls[2].vals[1])
+			assert.equal('  Match 2: Laylin0rz', addon.add_to_chat.calls[3].vals[1])
+			assert.equal(3, #addon.add_to_chat.calls)
+		end)
+
+		it('logs a message to the chat log when the nm name does not partially match any files', function()
+			local addon = get_addon()
+			nm_files = { "not-laylina.lua" }
+			spy.on(addon, 'add_to_chat')
+
+			trigger_event("addon command", "track", "lay")
+
+			assert.spy(addon.add_to_chat).was_called()
+			assert.equal('Unable to find NMs using: "lay"', addon.add_to_chat.calls[1].vals[1])
+			assert.equal(1, #addon.add_to_chat.calls)
 		end)
 	end)
 
