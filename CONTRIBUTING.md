@@ -2,7 +2,7 @@
 
 Pull requests welcome!
 
-## Automation
+## Automation
 
 All code is covered by automated tests. Pull requests are expected to follow the same. Don't be scared - it's actually pretty fun! This was my first addon built with tests.
 
