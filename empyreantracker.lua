@@ -1,6 +1,6 @@
 _addon.name = "Empyrean Tracker"
 _addon.author = "Dean James (Xurion of Bismarck)"
-_addon.commands = { "empyreantracker", "empytracker", "empy" }
+_addon.commands = { "empyreantracker", "et" }
 _addon.version = "1.0.0"
 
 config = require("config")
@@ -93,7 +93,7 @@ function generate_text(data, depth)
 		if ki_resource then
 			pop_ki_name = ucwords(ki_resource.en)
 		end
-		
+
 		text = text .. "\n" .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. pop_ki_name
 		if pop.dropped_from.pops then
 			text = text .. generate_text(pop.dropped_from, depth + 1)
@@ -111,14 +111,14 @@ EmpyreanTracker.add_to_chat = function(message)
 end
 
 EmpyreanTracker.generate_info = function(nm, key_items, items)
-	if nm == nil then
-		error('generate_info requires the nm arg to be a table')
+	if type(nm) ~= 'table' then
+		error('generate_info requires the nm arg to be a table, but received ' .. nm .. ' (a ' .. type(nm) .. ') instead')
 	end
 
 	local info = {
 		has_all_kis = true,
 		text = ""
-	}
+  }
 
 	if nm.pops then
 		for _, key_item_data in pairs(nm.pops) do
@@ -172,7 +172,12 @@ function find_nm_files(search)
 	return matching_files
 end
 
+function get_nm_data_from_file(nm)
+	return require('nms/' .. nm)
+end
+
 windower.register_event("addon command", function(command, nm_name)
+	print('running addon command', command, nm_name)
 	if command == 'track' then
 		local lower_nm_name = nm_name:lower()
 		local matching_file_names = find_nm_files(lower_nm_name)
@@ -203,8 +208,9 @@ end)
 EmpyreanTracker.update = function()
 local key_items = windower.ffxi.get_key_items()
 	local inventory = windower.ffxi.get_items().inventory
-	local generated_info = EmpyreanTracker.generate_info(EmpyreanTracker.settings.tracking, key_items, inventory)
-	EmpyreanTracker.text:update(generated_info.text)
+	local nm_data = get_nm_data_from_file(EmpyreanTracker.settings.tracking)
+	local generated_info = EmpyreanTracker.generate_info(nm_data, key_items, inventory)
+	EmpyreanTracker.text:text(generated_info.text)
 	if generated_info.has_all_kis then
 		EmpyreanTracker.text:bg_color(0, 75, 0)
 	else
