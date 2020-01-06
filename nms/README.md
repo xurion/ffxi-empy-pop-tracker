@@ -58,3 +58,5 @@ A larger example with multiple nested entites:
 	} }
 }
 ```
+
+The main addon file requires the index.lua file which in turn is responsible for requiring and returning data for each nm.
