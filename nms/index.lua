@@ -1,3 +1,4 @@
+
 local nms = {
   'alfard',
   'apademak',
@@ -20,7 +21,7 @@ local nms = {
 
 nm_data = {}
 for _, nm in pairs(nms) do
-  nm_data[nm] = require(nm)
+  nm_data[nm] = require('nms/' .. nm)
 end
 
 return nm_data

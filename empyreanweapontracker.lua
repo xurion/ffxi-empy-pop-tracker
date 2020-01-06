@@ -3,6 +3,7 @@ _addon.author = "Dean James (Xurion of Bismarck)"
 _addon.commands = { "ewt", "empyreanweapontracker" }
 _addon.version = "2.0.0"
 
+config = require("config")
 res = require("resources")
 nm_data = require("nms/index")
 
@@ -26,17 +27,29 @@ defaults.text.text.font = "Consolas"
 defaults.text.text.size = 10
 defaults.tracking = "briareus"
 
-EmpyreanWeaponTracker.settings = require("config").load(defaults)
+EmpyreanWeaponTracker.settings = config.load(defaults)
 EmpyreanWeaponTracker.text = require("texts").new(EmpyreanWeaponTracker.settings.text, EmpyreanWeaponTracker.settings)
 
 colors = {}
 colors.success = "\\cs(100,255,100)"
-colors.warning = "\\cs(255,170,0)"
 colors.danger = "\\cs(255,50,50)"
-colors.normal = "\\cs(255,255,255)"
 colors.close = "\\cr"
 
 function owns_item(id, items)
+  local owned = false
+
+  for _, item in pairs(items) do
+    --items contains 80 keys, but empty slots are not tables
+    if type(item) == 'table' and item.id == id then
+      owned = true
+      break
+    end
+  end
+  
+  return owned
+end
+
+function owns_key_item(id, items)
   local owned = false
 
   for _, item_id in pairs(items) do
@@ -45,7 +58,7 @@ function owns_item(id, items)
       break
     end
   end
-
+  
   return owned
 end
 
@@ -57,18 +70,41 @@ function get_indent(depth)
   return string.rep("  ", depth)
 end
 
-function generate_text(data, depth)
-  local text = depth == 1 and data.name .. "\n" or ""
+function generate_text(data, key_items, items, depth)
+  local text = depth == 1 and data.name or ""
   for _, pop in pairs(data.pops) do
-    local ki_resource = res.key_items[pop.id]
-    local pop_ki_name = 'Unknown KI'
-    if ki_resource then
-      pop_ki_name = ucwords(ki_resource.en)
+    local resource
+    local item_scope
+    local owns_item_function
+    if pop.type == 'key item' then
+      resource = res.key_items[pop.id]
+      item_scope = key_items
+      owns_item_function = owns_key_item
+    else
+      resource = res.items[pop.id]
+      item_scope = items
+      owns_item_function = owns_item
+    end
+    local pop_name = 'Unknown pop'
+    if resource then
+      pop_name = ucwords(resource.en)
     end
 
-    text = text .. "\n" .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. pop_ki_name
+    --separator line for each top-level mob
+    if depth == 1 then
+      text = text .. "\n"
+    end
+    
+    local owns_pop = owns_item_function(pop.id, item_scope)
+    local item_colour
+    if owns_pop then
+      item_colour = colors.success
+    else
+      item_colour = colors.danger
+    end
+    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. pop_name .. colors.close
     if pop.dropped_from.pops then
-      text = text .. generate_text(pop.dropped_from, depth + 1)
+      text = text .. generate_text(pop.dropped_from, key_items, items, depth + 1)
     end
   end
   return text
@@ -100,10 +136,10 @@ EmpyreanWeaponTracker.generate_info = function(nm, key_items, items)
       if not has_pop_ki then
         info.has_all_kis = false
       end
-
-      info.text = generate_text(nm, 1)
     end
   end
+
+  info.text = generate_text(nm, key_items, items, 1)
 
   return info
 end
@@ -112,7 +148,7 @@ function find_nms(query)
   local matching_nms = {}
   local lower_query = query:lower()
   for _, nm in pairs(nm_data) do
-    local result = string.match(nm.name, '(.*' .. lower_query .. '.*)')
+    local result = string.match(nm.name:lower(), '(.*' .. lower_query .. '.*)')
     if result then
       table.insert(matching_nms, result)
     end
@@ -128,23 +164,23 @@ windower.register_event("addon command", function(command, ...)
   end
 end)
 
-local commands = {}
+commands = {}
 
 commands.track = function(...)
   local args = {...}
   local nm_name = args[1]
   local matching_nm_names = find_nms(nm_name)
 
-  if #matching_file_names == 0 then
+  if #matching_nm_names == 0 then
     EmpyreanWeaponTracker.add_to_chat('Unable to find a NM using: "' .. nm_name .. '"')
-  elseif #matching_file_names > 1 then
-    EmpyreanWeaponTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_file_names .. ' NMs. Please be more explicit:')
-    for key, matching_file_name in pairs(matching_file_names) do
+  elseif #matching_nm_names > 1 then
+    EmpyreanWeaponTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
+    for key, matching_file_name in pairs(matching_nm_names) do
       EmpyreanWeaponTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
     end
   else
-    EmpyreanWeaponTracker.add_to_chat("Now tracking: " .. ucwords(matching_file_names[1]))
-    EmpyreanWeaponTracker.settings.tracking = matching_file_names[1]
+    EmpyreanWeaponTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
+    EmpyreanWeaponTracker.settings.tracking = matching_nm_names[1]
   end
 end
 
@@ -165,7 +201,7 @@ EmpyreanWeaponTracker.update = function()
   local inventory = windower.ffxi.get_items().inventory
   local tracked_nm_data = nm_data[EmpyreanWeaponTracker.settings.tracking]
   local generated_info = EmpyreanWeaponTracker.generate_info(tracked_nm_data, key_items, inventory)
-  EmpyreanWeaponTracker.text:update(generated_info.text)
+  EmpyreanWeaponTracker.text:text(generated_info.text)
   if generated_info.has_all_kis then
     EmpyreanWeaponTracker.text:bg_color(0, 75, 0)
   else
