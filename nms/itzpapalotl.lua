@@ -14,7 +14,7 @@ return {
 	}, {
 		id = 1490, --Distended Chigoe Abdomen
 		type = "key item",
-		dropped_from = { name = "Tunga (Timed, (K-10))" }
+		dropped_from = { name = "Tunga, Timed (K-10)" }
 	}, {
 		id = 1489, --Bulbous crawler cocoon
 		type = "key item",

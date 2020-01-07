@@ -3,11 +3,11 @@ return {
   pops = { {
     id = 1473, --Sodden Sandworm Husk
     type = "key item",
-    dropped_from = { name = "Minhocao (Timed, 10-15 mins, (I-6))" }
+    dropped_from = { name = "Minhocao, Timed (I-6)" }
   }, {
     id = 1475, --Sticky Gnat Wing
     type = "key item",
-    dropped_from = { name = "Adze (Timed, 10-15 mins, (G-5))" }
+    dropped_from = { name = "Adze, Timed (G-5)" }
   }, {
     id = 1472, --Fat-lined Cockatrice Skin
     type = "key item",

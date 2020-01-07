@@ -79,6 +79,6 @@ return {
   }, {
     id = 1471, --Mossy Adamantoise Shell
     type = "key item",
-    dropped_from = { name = "Chukwa (Timed, (F-4/F-5))" }
+    dropped_from = { name = "Chukwa, Timed (F-4/F-5)" }
   } }
 }

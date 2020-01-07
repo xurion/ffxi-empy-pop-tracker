@@ -18,7 +18,7 @@ return {
 			}, {
 				id = 3247, --Sisyphus Fragment
 				type = "item",
-				dropped_from = { name = "Sisyphus (Timed, (F-6/G-6))" }
+				dropped_from = { name = "Sisyphus, Timed (F-6/G-6)" }
 			}, {
 				id = 3253, --High-quality marid hide
 				type = "item",

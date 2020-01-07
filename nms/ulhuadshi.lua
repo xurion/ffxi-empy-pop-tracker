@@ -3,7 +3,7 @@ return {
 	pops = { {
 		id = 1492, --Shriveled Hecteyes Stalk
 		type = "key item",
-		dropped_from = { name = "Amun (Timed, (H-8/I-9))" }
+		dropped_from = { name = "Amun, Timed (H-8/I-9)" }
 	}, {
 		id = 1491, --Mucid Worm Segment
 		type = "key item",

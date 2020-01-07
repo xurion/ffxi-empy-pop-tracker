@@ -14,6 +14,6 @@ return {
 	}, {
 		id = 1505, --Doffed Poroggo Hat
 		type = "key item",
-		dropped_from = { name = "Heqet (Timed, (I-6))" }
+		dropped_from = { name = "Heqet, Timed (I-6)" }
 	} }
 }

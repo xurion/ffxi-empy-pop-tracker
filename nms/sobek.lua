@@ -3,7 +3,7 @@ return {
 	pops = { {
 		id = 1500, --Molted Peiste Skin
 		type = "key item",
-		dropped_from = { name = "Gukumatz (Timed, (J-11))" }
+		dropped_from = { name = "Gukumatz, Timed (J-11)" }
 	}, {
 		id = 1498, --Bloodstained Bugard Fang
 		type = "key item",

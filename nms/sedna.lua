@@ -3,7 +3,7 @@ return {
 	pops = { {
 		id = 1512, --Shimmering Pugil Scale
 		type = "key item",
-		dropped_from = { name = "Hrosshvalur (Timed, (J-6))" }
+		dropped_from = { name = "Hrosshvalur, Timed (J-6)" }
 	}, {
 		id = 1511, --Glossy Sea Monk Sucker
 		type = "key item",

@@ -26,7 +26,7 @@ return {
 		}, {
 			id = 1510, --Imbrued Vampyr Fang
 			type = "key item",
-			dropped_from = { name = "Lord Varney (Timed, (G-10/H-10))" }
+			dropped_from = { name = "Lord Varney, Timed (G-10/H-10)" }
 		} }
 	}
 }

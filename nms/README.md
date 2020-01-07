@@ -18,7 +18,7 @@ A simple example of the above would be:
 	pops = { {
 		id = 1531, --Vacant Bugard Eye
 		type = "key item",
-		dropped_from = { name = "Deelgeed (Timed, (F-9/F-10))" }
+		dropped_from = { name = "Deelgeed, Timed (F-9/F-10)" }
 	} }
 }
 ```
@@ -52,7 +52,7 @@ A larger example with multiple nested entites:
 			}, {
 				id = 1510, --Imbrued Vampyr Fang
 				type = "item",
-				dropped_from = { name = "Lord Varney (Timed, (G-10/H-10))" }
+				dropped_from = { name = "Lord Varney, Timed (G-10/H-10)" }
 			} }
 		}
 	} }

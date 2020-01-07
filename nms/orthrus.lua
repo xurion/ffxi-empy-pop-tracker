@@ -18,7 +18,7 @@ return {
 			}, {
 				id = 3232, --Tiger King Hide
 				type = "item",
-				dropped_from = { name = "Ansherekh (Timed, (F-8/G-8))" }
+				dropped_from = { name = "Ansherekh, Timed (F-8/G-8)" }
 			}, {
 				id = 3238, --H.Q. Dhalmel Hide
 				type = "item",
