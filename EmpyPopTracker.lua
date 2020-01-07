@@ -1,13 +1,13 @@
 _addon.name = "Empyrean Weapon Tracker"
 _addon.author = "Dean James (Xurion of Bismarck)"
-_addon.commands = { "ewt", "empyreanweapontracker" }
+_addon.commands = { "ewt", "empypoptracker" }
 _addon.version = "2.0.0"
 
 config = require("config")
 res = require("resources")
 nm_data = require("nms/index")
 
-local EmpyreanWeaponTracker = {}
+local EmpyPopTracker = {}
 
 local defaults = {}
 defaults.text = {}
@@ -27,8 +27,8 @@ defaults.text.text.font = "Consolas"
 defaults.text.text.size = 10
 defaults.tracking = "briareus"
 
-EmpyreanWeaponTracker.settings = config.load(defaults)
-EmpyreanWeaponTracker.text = require("texts").new(EmpyreanWeaponTracker.settings.text, EmpyreanWeaponTracker.settings)
+EmpyPopTracker.settings = config.load(defaults)
+EmpyPopTracker.text = require("texts").new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
 
 colors = {}
 colors.success = "\\cs(100,255,100)"
@@ -45,7 +45,7 @@ function owns_item(id, items)
       break
     end
   end
-  
+
   return owned
 end
 
@@ -58,7 +58,7 @@ function owns_key_item(id, items)
       break
     end
   end
-  
+
   return owned
 end
 
@@ -75,15 +75,13 @@ function generate_text(data, key_items, items, depth)
   for _, pop in pairs(data.pops) do
     local resource
     local item_scope
-    local owns_item_function
+    local owns_pop
     if pop.type == 'key item' then
       resource = res.key_items[pop.id]
-      item_scope = key_items
-      owns_item_function = owns_key_item
+      owns_pop = owns_key_item(pop.id, key_item)
     else
       resource = res.items[pop.id]
-      item_scope = items
-      owns_item_function = owns_item
+      owns_pop = owns_item(pop.id, items)
     end
     local pop_name = 'Unknown pop'
     if resource then
@@ -94,8 +92,7 @@ function generate_text(data, key_items, items, depth)
     if depth == 1 then
       text = text .. "\n"
     end
-    
-    local owns_pop = owns_item_function(pop.id, item_scope)
+
     local item_colour
     if owns_pop then
       item_colour = colors.success
@@ -110,7 +107,7 @@ function generate_text(data, key_items, items, depth)
   return text
 end
 
-EmpyreanWeaponTracker.add_to_chat = function(message)
+EmpyPopTracker.add_to_chat = function(message)
   if type(message) ~= 'string' then
     error('add_to_chat requires the message arg to be a string')
   end
@@ -118,7 +115,7 @@ EmpyreanWeaponTracker.add_to_chat = function(message)
   windower.add_to_chat(8, message)
 end
 
-EmpyreanWeaponTracker.generate_info = function(nm, key_items, items)
+EmpyPopTracker.generate_info = function(nm, key_items, items)
   local nm_type = type(nm)
   if nm_type ~= 'table' then
     error('generate_info requires the nm arg to be a table, but got ' .. nm_type .. ' instead')
@@ -172,46 +169,46 @@ commands.track = function(...)
   local matching_nm_names = find_nms(nm_name)
 
   if #matching_nm_names == 0 then
-    EmpyreanWeaponTracker.add_to_chat('Unable to find a NM using: "' .. nm_name .. '"')
+    EmpyPopTracker.add_to_chat('Unable to find a NM using: "' .. nm_name .. '"')
   elseif #matching_nm_names > 1 then
-    EmpyreanWeaponTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
+    EmpyPopTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
     for key, matching_file_name in pairs(matching_nm_names) do
-      EmpyreanWeaponTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
+      EmpyPopTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
     end
   else
-    EmpyreanWeaponTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
-    EmpyreanWeaponTracker.settings.tracking = matching_nm_names[1]
+    EmpyPopTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
+    EmpyPopTracker.settings.tracking = matching_nm_names[1]
   end
 end
 
 commands.help = function()
-  EmpyreanWeaponTracker.add_to_chat("---Empyrean Weapon Tracker---")
-  EmpyreanWeaponTracker.add_to_chat("Trackable NMs:")
+  EmpyPopTracker.add_to_chat("---Empyrean Weapon Tracker---")
+  EmpyPopTracker.add_to_chat("Trackable NMs:")
   for _, nm in pairs(nm_data) do
-    EmpyreanWeaponTracker.add_to_chat(ucwords(nm.name))
+    EmpyPopTracker.add_to_chat(ucwords(nm.name))
   end
-  EmpyreanWeaponTracker.add_to_chat("")
-  EmpyreanWeaponTracker.add_to_chat("Available commands:")
-  EmpyreanWeaponTracker.add_to_chat("//" .. _addon.commands[1] .. " track briareus - tracks Briareus pops. You can also supply partial names such as bri")
-  EmpyreanWeaponTracker.add_to_chat("//" .. _addon.commands[1] .. " help - displays this help")
+  EmpyPopTracker.add_to_chat("")
+  EmpyPopTracker.add_to_chat("Available commands:")
+  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " track briareus - tracks Briareus pops. You can also supply partial names such as bri")
+  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " help - displays this help")
 end
 
-EmpyreanWeaponTracker.update = function()
+EmpyPopTracker.update = function()
   local key_items = windower.ffxi.get_key_items()
   local inventory = windower.ffxi.get_items().inventory
-  local tracked_nm_data = nm_data[EmpyreanWeaponTracker.settings.tracking]
-  local generated_info = EmpyreanWeaponTracker.generate_info(tracked_nm_data, key_items, inventory)
-  EmpyreanWeaponTracker.text:text(generated_info.text)
+  local tracked_nm_data = nm_data[EmpyPopTracker.settings.tracking]
+  local generated_info = EmpyPopTracker.generate_info(tracked_nm_data, key_items, inventory)
+  EmpyPopTracker.text:text(generated_info.text)
   if generated_info.has_all_kis then
-    EmpyreanWeaponTracker.text:bg_color(0, 75, 0)
+    EmpyPopTracker.text:bg_color(0, 75, 0)
   else
-    EmpyreanWeaponTracker.text:bg_color(0, 0, 0)
+    EmpyPopTracker.text:bg_color(0, 0, 0)
   end
-  EmpyreanWeaponTracker.text:visible(true)
+  EmpyPopTracker.text:visible(true)
 end
 
 windower.register_event('load', 'incoming text', 'remove item', function()
-  EmpyreanWeaponTracker.update()
+  EmpyPopTracker.update()
 end)
 
-return EmpyreanWeaponTracker
+return EmpyPopTracker
