@@ -1,6 +1,6 @@
 _addon.name = "Empyrean Weapon Tracker"
 _addon.author = "Dean James (Xurion of Bismarck)"
-_addon.commands = { "ewt", "empypoptracker" }
+_addon.commands = { "ept", "empypoptracker" }
 _addon.version = "2.0.0"
 
 config = require("config")
@@ -78,7 +78,7 @@ function generate_text(data, key_items, items, depth)
     local owns_pop
     if pop.type == 'key item' then
       resource = res.key_items[pop.id]
-      owns_pop = owns_key_item(pop.id, key_item)
+      owns_pop = owns_key_item(pop.id, key_items)
     else
       resource = res.items[pop.id]
       owns_pop = owns_item(pop.id, items)
@@ -128,7 +128,7 @@ EmpyPopTracker.generate_info = function(nm, key_items, items)
 
   if nm.pops then
     for _, key_item_data in pairs(nm.pops) do
-      local has_pop_ki = owns_item(key_item_data.id, key_items)
+      local has_pop_ki = owns_key_item(key_item_data.id, key_items)
 
       if not has_pop_ki then
         info.has_all_kis = false
