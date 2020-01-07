@@ -1,6 +1,6 @@
 # Todo list
 
-* Chloris is broken.
+* Check Chloris is fixed.
 * Glavoid is broken.
 * Consistently word timed spawns against each NM name.
 * Save last tracked NM in settings.
