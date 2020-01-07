@@ -2,6 +2,6 @@
 
 * Check Chloris is fixed.
 * Check Glavoid is fixed.
-* Consistently word forced spawns against each NM name.
+* Correct Bukhis data example in README.
 * Save last tracked NM in settings.
 * Confirm the position of monsters with (?-?) as their current position.

@@ -32,7 +32,7 @@ A larger example with multiple nested entites:
 		id = 1508, --Ingrown Taurus Nail
 		type = "key item",
 		dropped_from = {
-			name = "Khalkotaur (Forced, (F-4))",
+			name = "Khalkotaur, Forced (F-4)",
 			pops = { {
 				id = 3098, --Gnarled Taurus Horn
 				type = "item",
@@ -41,7 +41,7 @@ A larger example with multiple nested entites:
 				id = 1509, --Ossified Gargouille Hand
 				type = "item",
 				dropped_from = {
-					name = "Quasimodo (Forced, (F-4))",
+					name = "Quasimodo, Forced (F-4)",
 					pops = { {
 						id = 3099, --Gargouille Stone
 						dropped_from = {

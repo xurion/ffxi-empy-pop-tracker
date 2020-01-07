@@ -8,7 +8,7 @@ return {
 		id = 1498, --Bloodstained Bugard Fang
 		type = "key item",
 		dropped_from = {
-			name = "Minax Bugard (Forced, (K-10))",
+			name = "Minax Bugard, Forced (K-10)",
 			pops = { {
 				id = 3085, --Bewitching Tusk
 				type = "item",
@@ -19,7 +19,7 @@ return {
 		id = 1499, --Gnarled Lizard Nail
 		type = "key item",
 		dropped_from = {
-			name = "Sirrush (Forced, (I-11))",
+			name = "Sirrush, Forced (I-11)",
 			pops = { {
 				id = 3086, --Molt Scraps
 				type = "item",
