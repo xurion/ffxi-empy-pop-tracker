@@ -6,6 +6,10 @@ return {
     dropped_from = {
       name = "Hedetet, Forced (F-7)",
       pops = { {
+        id = 2921, --Venomous Scorpion Stinger
+        type = "item",
+        dropped_from = { name = "Canyon Scorpion (F-7)" }
+      }, {
         id = 2948, --Acidic Humus
         type = "item",
         dropped_from = {
@@ -16,10 +20,6 @@ return {
             dropped_from = { name = "Pachypodium (H-8)" }
           } }
         }
-      }, {
-        id = 2921, --Venomous Scorpion Stinger
-        type = "item",
-        dropped_from = { name = "Canyon Scorpion (F-7)" }
       } }
     }
   }, {
