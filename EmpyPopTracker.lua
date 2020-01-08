@@ -20,7 +20,6 @@ defaults.text.bg.blue = 0
 defaults.text.bg.green = 0
 defaults.text.bg.red = 0
 defaults.text.bg.visible = true
-defaults.text.bg.visible = true
 defaults.text.padding = 8
 defaults.text.text = {}
 defaults.text.text.font = "Consolas"
@@ -181,6 +180,14 @@ commands.track = function(...)
   end
 end
 
+commands.hide = function()
+  EmpyPopTracker.text:visible(false)
+end
+
+commands.show = function()
+  EmpyPopTracker.text:visible(true)
+end
+
 commands.help = function()
   EmpyPopTracker.add_to_chat("---Empyrean Weapon Tracker---")
   EmpyPopTracker.add_to_chat("Trackable NMs:")
@@ -190,6 +197,8 @@ commands.help = function()
   EmpyPopTracker.add_to_chat("")
   EmpyPopTracker.add_to_chat("Available commands:")
   EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " track briareus - tracks Briareus pops. You can also supply partial names such as bri")
+  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " hide - hides the UI")
+  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " show - shows the UI")
   EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " help - displays this help")
 end
 
@@ -204,7 +213,6 @@ EmpyPopTracker.update = function()
   else
     EmpyPopTracker.text:bg_color(0, 0, 0)
   end
-  EmpyPopTracker.text:visible(true)
 end
 
 windower.register_event('load', 'incoming text', 'remove item', function()
