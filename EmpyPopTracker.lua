@@ -75,9 +75,11 @@ function generate_text(data, key_items, items, depth)
     local resource
     local item_scope
     local owns_pop
+    local item_identifier = ''
     if pop.type == 'key item' then
       resource = res.key_items[pop.id]
       owns_pop = owns_key_item(pop.id, key_items)
+      item_identifier = ' [KI]'
     else
       resource = res.items[pop.id]
       owns_pop = owns_item(pop.id, items)
@@ -98,7 +100,7 @@ function generate_text(data, key_items, items, depth)
     else
       item_colour = colors.danger
     end
-    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. pop_name .. colors.close
+    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. pop_name .. item_identifier .. colors.close
     if pop.dropped_from.pops then
       text = text .. generate_text(pop.dropped_from, key_items, items, depth + 1)
     end
