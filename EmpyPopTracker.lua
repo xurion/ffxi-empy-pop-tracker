@@ -196,7 +196,7 @@ commands.show = function()
 end
 
 commands.help = function()
-  EmpyPopTracker.add_to_chat("---Empyrean Weapon Tracker---")
+  EmpyPopTracker.add_to_chat("---Empy Pop Tracker---")
   EmpyPopTracker.add_to_chat("Trackable NMs:")
   for _, nm in pairs(nm_data) do
     EmpyPopTracker.add_to_chat(ucwords(nm.name))
