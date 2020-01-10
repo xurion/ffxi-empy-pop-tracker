@@ -2,7 +2,9 @@
 
 An FFXI Windower 4 addon that tracks items and key items for popping Empyrean NMs in Abyssea, such as Briareus, Apademak and Sobek.
 
-![Example of Cirein-croin tracking](readme/demo.png)
+![Example of Cirein-croin tracking](readme/demo.png) ![All KIs obtained](readme/demo-full.png)
+
+Key items are identified by the Zhe (Ж) character.
 
 ## Load
 

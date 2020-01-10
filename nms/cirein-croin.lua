@@ -8,7 +8,7 @@ return {
       pops = { {
         id = 3089, --Orobon Cheekmeat
         type = "item",
-        dropped_from = { name = "Ancient Orobon (?-?)" }
+        dropped_from = { name = "Ancient Orobon (F-5)" }
       } }
     }
   }, {
