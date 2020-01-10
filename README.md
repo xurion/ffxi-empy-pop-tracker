@@ -14,7 +14,7 @@ Key items are identified by the Zhe (Ж) character.
 
 `//ept track glavoid` tracks Glavoid pop items/key items.
 
-You can also track an NM by typing the start of the name, because fuck having to remember how to spell Itzpapalotl:
+You can also track an NM by typing part of the name, because fuck having to remember how to spell Itzpapalotl:
 
 `//ept track itz`
 
