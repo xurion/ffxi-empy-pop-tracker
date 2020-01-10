@@ -1,7 +1,6 @@
 # Todo list
 
 * Investigate if an icon or ascii symbol can be used instead of "[KI]".
-* Check that the tracked NM in settings is persisted following a reload.
 * Update readme image following update to (?-?). Also make it smaller.
 * Perform a full test of monster pop items, and mob & pop locations.
 * Add multi-bag support - search inventory plus sack, satchel, case and items in mog house.

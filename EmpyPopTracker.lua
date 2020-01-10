@@ -25,6 +25,7 @@ defaults.text.text = {}
 defaults.text.text.font = "Consolas"
 defaults.text.text.size = 10
 defaults.tracking = "briareus"
+defaults.visible = true
 
 EmpyPopTracker.settings = config.load(defaults)
 EmpyPopTracker.text = require("texts").new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
@@ -181,17 +182,19 @@ commands.track = function(...)
   else
     EmpyPopTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
     EmpyPopTracker.settings.tracking = matching_nm_names[1]
-    EmpyPopTracker.settings:save()
+    commands.show()
   end
 end
 
 commands.hide = function()
   EmpyPopTracker.text:visible(false)
+  EmpyPopTracker.settings.visible = false
   EmpyPopTracker.settings:save()
 end
 
 commands.show = function()
   EmpyPopTracker.text:visible(true)
+  EmpyPopTracker.settings.visible = true
   EmpyPopTracker.settings:save()
 end
 
@@ -219,6 +222,9 @@ EmpyPopTracker.update = function()
     EmpyPopTracker.text:bg_color(0, 75, 0)
   else
     EmpyPopTracker.text:bg_color(0, 0, 0)
+  end
+  if EmpyPopTracker.settings.visible then
+    EmpyPopTracker.text:visible(true)
   end
 end
 
