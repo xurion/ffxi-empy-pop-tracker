@@ -237,8 +237,14 @@ EmpyPopTracker.update = function()
   end
 end
 
-windower.register_event('load', 'incoming text', 'remove item', function()
+windower.register_event('load', 'add item', 'remove item', function()
   EmpyPopTracker.update()
+end)
+
+windower.register_event('incoming chunk', function(id)
+  if id == 0x055 then
+    EmpyPopTracker.update()
+  end
 end)
 
 return EmpyPopTracker
