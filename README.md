@@ -18,7 +18,33 @@ You can also track an NM by typing part of the name, because fuck having to reme
 
 `//ept track itz`
 
-For a full list of trackable NMs, see the nms directory.
+For a full list of trackable NMs, see the nms directory or use the `list` command (see below).
+
+## Other Commands
+
+### List Trackable NMs
+
+`//ept list`
+
+### Open BG Wiki for NM
+
+`//ept bg`
+
+### Hide UI
+
+`//ept hide`
+
+### Show UI
+
+`//ept show`
+
+### Display Help
+
+`//ept help`
+
+## Where is Fistule?
+
+Fistule is a unique NM when compared to the others. It does not require KIs that can be tracked, so it isn't included with the addon.
 
 ## Contributing
 
