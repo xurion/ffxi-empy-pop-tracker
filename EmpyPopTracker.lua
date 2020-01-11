@@ -182,6 +182,7 @@ commands.track = function(...)
   else
     EmpyPopTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
     EmpyPopTracker.settings.tracking = matching_nm_names[1]
+    EmpyPopTracker.update()
     commands.show()
   end
 end
