@@ -1,5 +1,6 @@
 return {
   name = "Glavoid",
+  bg_url = 'https://www.bg-wiki.com/bg/Glavoid',
   pops = { {
     id = 1473, --Sodden Sandworm Husk
     type = "key item",

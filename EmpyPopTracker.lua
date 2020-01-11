@@ -222,6 +222,11 @@ commands.list = function()
 end
 commands.l = commands.list
 
+commands.bg = function()
+  local tracking_nm = nm_data[EmpyPopTracker.settings.tracking]
+  windower.open_url(tracking_nm.bg_url)
+end
+
 EmpyPopTracker.update = function()
   local key_items = windower.ffxi.get_key_items()
   local inventory = windower.ffxi.get_items().inventory

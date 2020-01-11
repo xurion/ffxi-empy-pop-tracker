@@ -1,5 +1,6 @@
 return {
   name = "Alfard",
+  bg_url = 'https://www.bg-wiki.com/bg/Alfard',
   pops = { {
     id = 1530, --Venomous hydra fang
     type = "key item",

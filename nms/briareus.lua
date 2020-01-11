@@ -1,5 +1,6 @@
 return {
   name = "Briareus",
+  bg_url = 'https://www.bg-wiki.com/bg/Briareus',
   pops = { {
     id = 1482, --Dented Gigas Shield
     type = "key item",

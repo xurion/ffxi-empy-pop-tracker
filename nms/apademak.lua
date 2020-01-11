@@ -1,5 +1,6 @@
 return {
   name = "Apademak",
+  bg_url = 'https://www.bg-wiki.com/bg/Apademak',
   pops = { {
     id = 1525, --Torn Khimaira Wing
     type = "key item",

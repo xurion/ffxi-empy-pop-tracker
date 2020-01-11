@@ -1,5 +1,6 @@
 return {
   name = "Ulhuadshi",
+  bg_url = 'https://www.bg-wiki.com/bg/Ulhuadshi',
   pops = { {
     id = 1492, --Shriveled Hecteyes Stalk
     type = "key item",

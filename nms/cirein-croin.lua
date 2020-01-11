@@ -1,5 +1,6 @@
 return {
   name = "Cirein-Croin",
+  bg_url = 'https://www.bg-wiki.com/bg/Cirein-croin',
   pops = { {
     id = 1504, --Glistening Orobon Liver
     type = "key item",

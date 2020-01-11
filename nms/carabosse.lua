@@ -1,5 +1,6 @@
 return {
   name = "Carabosse",
+  bg_url = 'https://www.bg-wiki.com/bg/Carabosse',
   pops = { {
     id = 1485, --Pellucid Fly Eye
     type = "key item",
