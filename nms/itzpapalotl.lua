@@ -8,7 +8,7 @@ return {
       pops = { {
         id = 3072, --Withered Cocoon
         type = "item",
-        dropped_from = { name = "Gullycampa (?-?)" }
+        dropped_from = { name = "Gullycampa (K-10)" }
       } }
     }
   }, {
@@ -23,7 +23,7 @@ return {
       pops = { {
         id = 3073, --Eruca Egg
         type = "item",
-        dropped_from = { name = "Ignis Eruca (I-10/J-10)" }
+        dropped_from = { name = "Ignis Eruca (J-10)" }
       } }
     }
   } }
