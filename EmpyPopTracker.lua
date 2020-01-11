@@ -185,32 +185,41 @@ commands.track = function(...)
     commands.show()
   end
 end
+commands.t = commands.track
 
 commands.hide = function()
   EmpyPopTracker.text:visible(false)
   EmpyPopTracker.settings.visible = false
   EmpyPopTracker.settings:save()
 end
+commands.h = commands.hide
 
 commands.show = function()
   EmpyPopTracker.text:visible(true)
   EmpyPopTracker.settings.visible = true
   EmpyPopTracker.settings:save()
 end
+commands.s = commands.show
 
 commands.help = function()
+  EmpyPopTracker.add_to_chat("---Empy Pop Tracker---")
+  EmpyPopTracker.add_to_chat("Available commands:")
+  EmpyPopTracker.add_to_chat("//ept track briareus - tracks Briareus pops (partial names such as apadem work too!)")
+  EmpyPopTracker.add_to_chat("//ept hide - hides the UI")
+  EmpyPopTracker.add_to_chat("//ept show - shows the UI")
+  EmpyPopTracker.add_to_chat("//ept list - lists all trackable NMs")
+  EmpyPopTracker.add_to_chat("//ept help - displays this help")
+  EmpyPopTracker.add_to_chat("Any command can be shorthanded to the initial. For example, //ept t briareus")
+end
+
+commands.list = function()
   EmpyPopTracker.add_to_chat("---Empy Pop Tracker---")
   EmpyPopTracker.add_to_chat("Trackable NMs:")
   for _, nm in pairs(nm_data) do
     EmpyPopTracker.add_to_chat(ucwords(nm.name))
   end
-  EmpyPopTracker.add_to_chat("")
-  EmpyPopTracker.add_to_chat("Available commands:")
-  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " track briareus - tracks Briareus pops. You can also supply partial names such as bri")
-  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " hide - hides the UI")
-  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " show - shows the UI")
-  EmpyPopTracker.add_to_chat("//" .. _addon.commands[1] .. " help - displays this help")
 end
+commands.l = commands.list
 
 EmpyPopTracker.update = function()
   local key_items = windower.ffxi.get_key_items()
