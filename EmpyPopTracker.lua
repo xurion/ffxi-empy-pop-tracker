@@ -38,11 +38,17 @@ colors.close = "\\cr"
 function owns_item(id, items)
   local owned = false
 
-  for _, item in pairs(items) do
-    --items contains 80 keys, but empty slots are not tables
-    if type(item) == 'table' and item.id == id then
-      owned = true
-      break
+  -- Loop maximum 80 times over all slots. 80 indexes are returned for each bag regardless of max capacity.
+  for i = 1, 80, 1 do
+    if items.safe[i].id == id or 
+      items.safe2[i].id == id or
+      items.locker[i].id == id or
+      items.sack[i].id == id or
+      items.satchel[i].id == id or
+      items.inventory[i].id == id or
+      items.storage[i].id == id then
+        owned = true
+        break
     end
   end
 
@@ -225,9 +231,9 @@ end
 
 EmpyPopTracker.update = function()
   local key_items = windower.ffxi.get_key_items()
-  local inventory = windower.ffxi.get_items().inventory
+  local items = windower.ffxi.get_items()
   local tracked_nm_data = nm_data[EmpyPopTracker.settings.tracking]
-  local generated_info = EmpyPopTracker.generate_info(tracked_nm_data, key_items, inventory)
+  local generated_info = EmpyPopTracker.generate_info(tracked_nm_data, key_items, items)
   EmpyPopTracker.text:text(generated_info.text)
   if generated_info.has_all_kis then
     EmpyPopTracker.text:bg_color(0, 75, 0)
