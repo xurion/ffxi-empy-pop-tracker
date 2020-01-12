@@ -9,7 +9,7 @@ return {
       pops = { {
         id = 2897, --Transparent Insect Wing
         type = "item",
-        dropped_from = { name = "Plateau Glider (H-7/H-8)" }
+        dropped_from = { name = "Plateau Glider (H-7)" }
       } }
     }
   }, {
@@ -20,7 +20,7 @@ return {
       pops = { {
         id = 2898, --Piceous Scale
         type = "item",
-        dropped_from = { name = "Farfadet (G-7/H-7)" }
+        dropped_from = { name = "Farfadet (H-7)" }
       } }
     }
   } }

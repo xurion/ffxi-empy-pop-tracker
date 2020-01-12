@@ -47,11 +47,12 @@ return {
     }
   }, {
     id = 1468, --Veinous Hecteyes Eyelid
+    type = "key item",
     dropped_from = {
       name = "Ophanim, Forced (G-9)",
       pops = { {
         id = 2946, --Tarnished Pincer
-        type = "key item",
+        type = "item",
         dropped_from = {
           name = "Vetehinen, Forced (H-10)",
           pops = { {
@@ -80,6 +81,6 @@ return {
   }, {
     id = 1471, --Mossy Adamantoise Shell
     type = "key item",
-    dropped_from = { name = "Chukwa, Timed (F-4/F-5)" }
+    dropped_from = { name = "Chukwa, Timed (F-5)" }
   } }
 }

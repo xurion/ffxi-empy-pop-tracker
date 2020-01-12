@@ -13,7 +13,7 @@ return {
       pops = { {
         id = 3085, --Bewitching Tusk
         type = "item",
-        dropped_from = { name = "Abyssobugard (K-10/K-11)" }
+        dropped_from = { name = "Abyssobugard (J-10/K-11)" }
       } }
     }
   }, {
