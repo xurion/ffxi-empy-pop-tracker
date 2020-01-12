@@ -9,7 +9,7 @@ return {
       pops = { {
         id = 2913, --Clouded Lens
         type = "item",
-        dropped_from = { name = "Deep Eye (J-6/K-7)" }
+        dropped_from = { name = "Deep Eye (K-6/K-7)" }
       } }
     }
   }, {
@@ -20,7 +20,7 @@ return {
       pops = { {
         id = 2912, --Giant Bugard Tusk
         type = "item",
-        dropped_from = { name = "Ypotryll (H-6/I-7)" }
+        dropped_from = { name = "Ypotryll (I-7)" }
       } }
     }
   }, {
@@ -31,7 +31,7 @@ return {
       pops = { {
         id = 2910, --Armored Dragonhorn
         type = "item",
-        dropped_from = { name = "Mesa Wivre (G-5/H-6)" }
+        dropped_from = { name = "Mesa Wivre (G-6)" }
       } }
     }
   } }
