@@ -33,6 +33,7 @@ EmpyPopTracker.text = require("texts").new(EmpyPopTracker.settings.text, EmpyPop
 colors = {}
 colors.success = "\\cs(100,255,100)"
 colors.danger = "\\cs(255,50,50)"
+colors.warning = "\\cs(255,170,0)"
 colors.close = "\\cr"
 
 function owns_item(id, items)
@@ -68,6 +69,18 @@ function owns_key_item(id, items)
   return owned
 end
 
+function item_treasure_pool_count(id, treasure)
+  local count = 0
+
+  for _, item in pairs(treasure) do
+    if item.item_id == id then
+      count = count + 1
+    end
+  end
+
+  return count
+end
+
 function ucwords(str)
   return string.gsub(str, "(%a)([%w_']*)", function(first, rest)
     return first:upper() .. rest:lower()
@@ -84,6 +97,7 @@ function generate_text(data, key_items, items, depth)
     local resource
     local item_scope
     local owns_pop
+    local in_pool_count = 0
     local item_identifier = ''
     if pop.type == 'key item' then
       resource = res.key_items[pop.id]
@@ -92,6 +106,7 @@ function generate_text(data, key_items, items, depth)
     else
       resource = res.items[pop.id]
       owns_pop = owns_item(pop.id, items)
+      in_pool_count = item_treasure_pool_count(pop.id, items.treasure)
     end
     local pop_name = 'Unknown pop'
     if resource then
@@ -109,7 +124,12 @@ function generate_text(data, key_items, items, depth)
     else
       item_colour = colors.danger
     end
-    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. item_identifier .. pop_name .. colors.close
+
+    local pool_notification = ''
+    if in_pool_count > 0 then
+      pool_notification = colors.warning .. ' [' .. in_pool_count .. ']' .. colors.close
+    end
+    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. item_identifier .. pop_name .. colors.close .. pool_notification
     if pop.dropped_from.pops then
       text = text .. generate_text(pop.dropped_from, key_items, items, depth + 1)
     end
@@ -250,7 +270,10 @@ windower.register_event('load', 'add item', 'remove item', function()
 end)
 
 windower.register_event('incoming chunk', function(id)
-  if id == 0x055 then
+  --0x055: KI update
+  --0x0D2: Treasure pool addition
+  --0x0D3: Treasure pool lot/drop
+  if id == 0x055 or id == 0x0D2 or id == 0x0D3 then
     EmpyPopTracker.update()
   end
 end)
