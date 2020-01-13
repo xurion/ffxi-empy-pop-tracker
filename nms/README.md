@@ -2,13 +2,14 @@
 
 The data structure for each trackable NM uses a series of nested NM entities. A standard NM entity contains the following data:
 
-| Key                 | Type      | Required? | Description                    |
-| ------------------- | --------- | --------- | ------------------------------ |
-| name                | String    | Required  | Name of the NM                 |
-| pops                | Table     | Optional  | The pop information for the NM |
-| pops{}.id           | Number    | Required  | The ID of the item/key item    |
-| pops{}.type         | String    | Required  | Either "key item" or "item"    |
-| pops{}.dropped_from | NM Entity | Required  | A nested set of NM information |
+| Key                 | Type      | Required? | Description                       |
+| ------------------- | --------- | --------- | --------------------------------- |
+| name                | String    | Required  | Name of the NM                    |
+| bg_url              | String    | Required  | URL of the bgwiki page for the NM |
+| pops                | Table     | Optional  | The pop information for the NM    |
+| pops{}.id           | Number    | Required  | The ID of the item/key item       |
+| pops{}.type         | String    | Required  | Either "key item" or "item"       |
+| pops{}.dropped_from | NM Entity | Required  | A nested set of NM information    |
 
 A simple example of the above would be:
 
