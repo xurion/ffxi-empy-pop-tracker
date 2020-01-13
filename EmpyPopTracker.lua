@@ -246,15 +246,18 @@ end
 commands.t = commands.track
 
 commands.hide = function()
+  active = false
   EmpyPopTracker.text:visible(false)
   EmpyPopTracker.settings.visible = false
   EmpyPopTracker.settings:save()
 end
 
 commands.show = function()
+  active = true
   EmpyPopTracker.text:visible(true)
   EmpyPopTracker.settings.visible = true
   EmpyPopTracker.settings:save()
+  EmpyPopTracker.update()
 end
 
 commands.help = function()
@@ -297,7 +300,7 @@ EmpyPopTracker.update = function()
 end
 
 windower.register_event('load', function()
-  if windower.ffxi.get_info().logged_in then
+  if windower.ffxi.get_info().logged_in and EmpyPopTracker.settings.visible then
     active = true
     EmpyPopTracker.update()
   end
@@ -319,8 +322,10 @@ windower.register_event('incoming chunk', function(id)
 end)
 
 windower.register_event('login', function()
-  EmpyPopTracker.text:visible(true)
-  active = true
+  if EmpyPopTracker.settings.visible then
+    EmpyPopTracker.text:visible(true)
+    active = true
+  end
 end)
 
 windower.register_event('logout', function()
