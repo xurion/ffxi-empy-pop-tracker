@@ -35,6 +35,8 @@ config = require("config")
 res = require("resources")
 nm_data = require("nms/index")
 
+active = false
+
 local EmpyPopTracker = {}
 
 local defaults = {}
@@ -234,6 +236,7 @@ commands.track = function(...)
       EmpyPopTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
     end
   else
+    active = true
     EmpyPopTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
     EmpyPopTracker.settings.tracking = matching_nm_names[1]
     EmpyPopTracker.update()
@@ -293,17 +296,36 @@ EmpyPopTracker.update = function()
   end
 end
 
-windower.register_event('load', 'add item', 'remove item', function()
-  EmpyPopTracker.update()
+windower.register_event('load', function()
+  if windower.ffxi.get_info().logged_in then
+    active = true
+    EmpyPopTracker.update()
+  end
+end)
+
+windower.register_event('add item', 'remove item', function()
+  if active then
+    EmpyPopTracker.update()
+  end
 end)
 
 windower.register_event('incoming chunk', function(id)
   --0x055: KI update
   --0x0D2: Treasure pool addition
   --0x0D3: Treasure pool lot/drop
-  if id == 0x055 or id == 0x0D2 or id == 0x0D3 then
+  if active and id == 0x055 or id == 0x0D2 or id == 0x0D3 then
     EmpyPopTracker.update()
   end
+end)
+
+windower.register_event('login', function()
+  EmpyPopTracker.text:visible(true)
+  active = true
+end)
+
+windower.register_event('logout', function()
+  EmpyPopTracker.text:visible(false)
+  active = false
 end)
 
 return EmpyPopTracker
