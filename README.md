@@ -1,4 +1,4 @@
-# FFXI Empyrean Pop Tracker
+# FFXI Empy Pop Tracker
 
 An FFXI Windower 4 addon that tracks items and key items for popping Empyrean NMs in Abyssea, such as Briareus, Apademak and Sobek.
 
