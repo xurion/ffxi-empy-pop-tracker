@@ -27,10 +27,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 return {
-  name = "Dragua",
+  name = 'Dragua',
   pops = { {
     id = 1521, --Bloodied Dragon Ear
-    type = "key item",
-    dropped_from = { name = "Hazhdiha, Timed (H-10)" }
+    type = 'key item',
+    dropped_from = { name = 'Hazhdiha, Timed (H-10)' }
   } }
 }
