@@ -45,7 +45,7 @@ defaults.text.pos = {}
 defaults.text.pos.x = 0
 defaults.text.pos.y = 0
 defaults.text.bg = {}
-defaults.text.bg.alpha = 150
+defaults.text.bg.alpha = 118350
 defaults.text.bg.blue = 0
 defaults.text.bg.green = 0
 defaults.text.bg.red = 0
@@ -162,10 +162,6 @@ end
 
 EmpyPopTracker.generate_info = function(nm, key_items, items)
   local nm_type = type(nm)
-  if nm_type ~= 'table' then
-    error('generate_info requires the nm arg to be a table, but got ' .. nm_type .. ' instead')
-  end
-
   local info = {
     has_all_kis = true,
     text = ''
