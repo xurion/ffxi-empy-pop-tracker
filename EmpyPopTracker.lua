@@ -26,14 +26,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
-_addon.name = "Empyrean Weapon Tracker"
-_addon.author = "Dean James (Xurion of Bismarck)"
-_addon.commands = { "ept", "empypoptracker" }
-_addon.version = "2.0.0"
+_addon.name = 'Empyrean Weapon Tracker'
+_addon.author = 'Dean James (Xurion of Bismarck)'
+_addon.commands = { 'ept', 'empypoptracker' }
+_addon.version = '2.0.0'
 
-config = require("config")
-res = require("resources")
-nm_data = require("nms/index")
+config = require('config')
+res = require('resources')
+nm_data = require('nms/index')
 
 active = false
 
@@ -52,19 +52,19 @@ defaults.text.bg.red = 0
 defaults.text.bg.visible = true
 defaults.text.padding = 8
 defaults.text.text = {}
-defaults.text.text.font = "Consolas"
+defaults.text.text.font = 'Consolas'
 defaults.text.text.size = 10
-defaults.tracking = "briareus"
+defaults.tracking = 'briareus'
 defaults.visible = true
 
 EmpyPopTracker.settings = config.load(defaults)
-EmpyPopTracker.text = require("texts").new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
+EmpyPopTracker.text = require('texts').new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
 
 colors = {}
-colors.success = "\\cs(100,255,100)"
-colors.danger = "\\cs(255,50,50)"
-colors.warning = "\\cs(255,170,0)"
-colors.close = "\\cr"
+colors.success = '\\cs(100,255,100)'
+colors.danger = '\\cs(255,50,50)'
+colors.warning = '\\cs(255,170,0)'
+colors.close = '\\cr'
 
 function owns_item(id, items)
   for _, bag in ipairs(items) do
@@ -104,17 +104,17 @@ function item_treasure_pool_count(id, treasure)
 end
 
 function ucwords(str)
-  return string.gsub(str, "(%a)([%w_']*)", function(first, rest)
+  return string.gsub(str, '(%a)([%w_\']*)', function(first, rest)
     return first:upper() .. rest:lower()
    end)
 end
 
 function get_indent(depth)
-  return string.rep("  ", depth)
+  return string.rep('  ', depth)
 end
 
 function generate_text(data, key_items, items, depth)
-  local text = depth == 1 and data.name or ""
+  local text = depth == 1 and data.name or ''
   for _, pop in pairs(data.pops) do
     local resource
     local item_scope
@@ -137,7 +137,7 @@ function generate_text(data, key_items, items, depth)
 
     --separator line for each top-level mob
     if depth == 1 then
-      text = text .. "\n"
+      text = text .. '\n'
     end
 
     local item_colour
@@ -151,7 +151,7 @@ function generate_text(data, key_items, items, depth)
     if in_pool_count > 0 then
       pool_notification = colors.warning .. ' [' .. in_pool_count .. ']' .. colors.close
     end
-    text = text .. "\n" .. get_indent(depth) .. pop.dropped_from.name .. "\n" .. get_indent(depth) .. ' >> ' .. item_colour .. item_identifier .. pop_name .. colors.close .. pool_notification
+    text = text .. '\n' .. get_indent(depth) .. pop.dropped_from.name .. '\n' .. get_indent(depth) .. ' >> ' .. item_colour .. item_identifier .. pop_name .. colors.close .. pool_notification
     if pop.dropped_from.pops then
       text = text .. generate_text(pop.dropped_from, key_items, items, depth + 1)
     end
@@ -175,7 +175,7 @@ EmpyPopTracker.generate_info = function(nm, key_items, items)
 
   local info = {
     has_all_kis = true,
-    text = ""
+    text = ''
   }
 
   if nm.pops then
@@ -205,7 +205,7 @@ function find_nms(query)
   return matching_nms
 end
 
-windower.register_event("addon command", function(command, ...)
+windower.register_event('addon command', function(command, ...)
   if commands[command] then
     commands[command](...)
   else
@@ -229,7 +229,7 @@ commands.track = function(...)
     end
   else
     active = true
-    EmpyPopTracker.add_to_chat("Now tracking: " .. ucwords(matching_nm_names[1]))
+    EmpyPopTracker.add_to_chat('Now tracking: ' .. ucwords(matching_nm_names[1]))
     EmpyPopTracker.settings.tracking = matching_nm_names[1]
     EmpyPopTracker.update()
     commands.show()
@@ -250,18 +250,18 @@ commands.show = function()
 end
 
 commands.help = function()
-  EmpyPopTracker.add_to_chat("---Empy Pop Tracker---")
-  EmpyPopTracker.add_to_chat("Available commands:")
-  EmpyPopTracker.add_to_chat("//ept t|track briareus - tracks Briareus pops (partial names such as apadem work too!)")
-  EmpyPopTracker.add_to_chat("//ept hide - hides the UI")
-  EmpyPopTracker.add_to_chat("//ept show - shows the UI")
-  EmpyPopTracker.add_to_chat("//ept list - lists all trackable NMs")
-  EmpyPopTracker.add_to_chat("//ept help - displays this help")
+  EmpyPopTracker.add_to_chat('---Empy Pop Tracker---')
+  EmpyPopTracker.add_to_chat('Available commands:')
+  EmpyPopTracker.add_to_chat('//ept t|track briareus - tracks Briareus pops (partial names such as apadem work too!)')
+  EmpyPopTracker.add_to_chat('//ept hide - hides the UI')
+  EmpyPopTracker.add_to_chat('//ept show - shows the UI')
+  EmpyPopTracker.add_to_chat('//ept list - lists all trackable NMs')
+  EmpyPopTracker.add_to_chat('//ept help - displays this help')
 end
 
 commands.list = function()
-  EmpyPopTracker.add_to_chat("---Empy Pop Tracker---")
-  EmpyPopTracker.add_to_chat("Trackable NMs:")
+  EmpyPopTracker.add_to_chat('---Empy Pop Tracker---')
+  EmpyPopTracker.add_to_chat('Trackable NMs:')
   for _, nm in pairs(nm_data) do
     EmpyPopTracker.add_to_chat(ucwords(nm.name))
   end
