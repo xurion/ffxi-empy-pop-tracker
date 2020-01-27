@@ -32,7 +32,7 @@ return {
     id = 1482, --Dented Gigas Shield
     type = "key item",
     dropped_from = {
-      name = "Adamastor (C-4)",
+      name = "Adamastor, Forced (C-4)",
       pops = { {
         id = 2894, --Trophy Shield
         type = "item",
@@ -43,7 +43,7 @@ return {
     id = 1484, --Severed Gigas Collar
     type = "key item",
     dropped_from = {
-      name = "Grandgousier (F-10)",
+      name = "Grandgousier, Forced (F-10)",
       pops = { {
         id = 2896, --Massive Armband
         type = "item",
@@ -54,7 +54,7 @@ return {
     id = 1483, --Warped Gigas Armband
     type = "key item",
     dropped_from = {
-      name = "Pantagruel (F-7)",
+      name = "Pantagruel, Forced (F-7)",
       pops = { {
         id = 2895, --Oversized Sock
         type = "item",

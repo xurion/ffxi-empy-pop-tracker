@@ -32,7 +32,7 @@ return {
     id = 1485, --Pellucid Fly Eye
     type = "key item",
     dropped_from = {
-      name = "La Theine Liege (I-7)",
+      name = "La Theine Liege, Forced (I-7)",
       pops = { {
         id = 2897, --Transparent Insect Wing
         type = "item",
@@ -43,7 +43,7 @@ return {
     id = 1486, --Shimmering Pixie Pinion
     type = "key item",
     dropped_from = {
-      name = "Baba Yaga (H-7)",
+      name = "Baba Yaga, Forced (H-7)",
       pops = { {
         id = 2898, --Piceous Scale
         type = "item",

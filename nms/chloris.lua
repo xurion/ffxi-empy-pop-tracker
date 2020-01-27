@@ -32,7 +32,7 @@ return {
     id = 1470, --Gory Scorpion Claw
     type = "key item",
     dropped_from = {
-      name = "Hedetet (F-7)",
+      name = "Hedetet, Forced (F-7)",
       pops = { {
         id = 2921, --Venomous Scorpion Stinger
         type = "item",
@@ -41,7 +41,7 @@ return {
         id = 2948, --Acidic Humus
         type = "item",
         dropped_from = {
-          name = "Gancanagh (H-8)",
+          name = "Gancanagh, Forced (H-8)",
           pops = { {
             id = 2920, --Alkaline Humus
             type = "item",
@@ -54,7 +54,7 @@ return {
     id = 1469, --Torn Bat Wing
     type = "key item",
     dropped_from = {
-      name = "Treble Noctules (I-9)",
+      name = "Treble Noctules, Forced (I-9)",
       pops = { {
         id = 2919, --Bloody Fang
         type = "item",
@@ -63,7 +63,7 @@ return {
         id = 2947, --Exorcised Skull
         type = "item",
         dropped_from = {
-          name = "Cannered Noz (F-6)",
+          name = "Cannered Noz, Forced (F-6)",
           pops = { {
             id = 2918, --Baleful Skull
             type = "item",
@@ -76,12 +76,12 @@ return {
     id = 1468, --Veinous Hecteyes Eyelid
     type = "key item",
     dropped_from = {
-      name = "Ophanim (G-9)",
+      name = "Ophanim, Forced (G-9)",
       pops = { {
         id = 2946, --Tarnished Pincer
         type = "item",
         dropped_from = {
-          name = "Vetehinen (H-10)",
+          name = "Vetehinen, Forced (H-10)",
           pops = { {
             id = 2916, --High-quality Limule Pincer
             type = "item",
@@ -94,7 +94,7 @@ return {
             id = 2945, --Shriveled Wing
             type = "item",
             dropped_from = {
-              name = "Halimede (G-12)",
+              name = "Halimede, Forced (G-12)",
               pops = { {
                 id = 2915, --High-quality Clionid Wing
                 type = "item",

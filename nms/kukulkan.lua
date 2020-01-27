@@ -32,7 +32,7 @@ return {
     id = 1466, --Mucid Ahriman Eyeball
     type = "key item",
     dropped_from = {
-      name = "Arimaspi (K-6)",
+      name = "Arimaspi, Forced (K-6)",
       pops = { {
         id = 2913, --Clouded Lens
         type = "item",
@@ -43,7 +43,7 @@ return {
     id = 1464, --Tattered Hippogryph Wing
     type = "key item",
     dropped_from = {
-      name = "Alkonost (H-6)",
+      name = "Alkonost, Forced (H-6)",
       pops = { {
         id = 2912, --Giant Bugard Tusk
         type = "item",
@@ -54,7 +54,7 @@ return {
     id = 1465, --Cracked Wivre Horn
     type = "key item",
     dropped_from = {
-      name = "Keratyrannos (G-6)",
+      name = "Keratyrannos, Forced (G-6)",
       pops = { {
         id = 2910, --Armored Dragonhorn
         type = "item",

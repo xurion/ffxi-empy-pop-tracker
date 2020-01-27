@@ -32,12 +32,12 @@ return {
     id = 1520, --Steaming cerberus tongue
     type = "key item",
     dropped_from = {
-      name = "Amarok (E-6)",
+      name = "Amarok, Forced (E-6)",
       pops = { {
         id = 3231, --Sharabha Hide
         type = "item",
         dropped_from = {
-          name = "Sharabha (G-5)",
+          name = "Sharabha, Forced (G-5)",
           pops = { {
             id = 3237,
             dropped_from = { name = "Dune Manticore (F-5/F-6)" }

@@ -36,7 +36,7 @@ return {
     id = 1511, --Glossy Sea Monk Sucker
     type = "key item",
     dropped_from = {
-      name = "Iku-Turso (J-7)",
+      name = "Iku-Turso, Forced (J-7)",
       pops = { {
         id = 3100, --Moonbeam Clam
         type = "item",
