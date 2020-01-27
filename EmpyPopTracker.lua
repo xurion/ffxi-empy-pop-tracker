@@ -67,23 +67,15 @@ colors.warning = "\\cs(255,170,0)"
 colors.close = "\\cr"
 
 function owns_item(id, items)
-  local owned = false
-
-  -- Loop maximum 80 times over all slots. 80 indexes are returned for each bag regardless of max capacity.
-  for i = 1, 80, 1 do
-    if items.safe[i].id == id or
-      items.safe2[i].id == id or
-      items.locker[i].id == id or
-      items.sack[i].id == id or
-      items.satchel[i].id == id or
-      items.inventory[i].id == id or
-      items.storage[i].id == id then
-        owned = true
-        break
+  for _, bag in ipairs(items) do
+    for _, item in ipairs(bag) do
+      if item.id == id then
+        return true
+      end
     end
   end
 
-  return owned
+  return false
 end
 
 function owns_key_item(id, items)
