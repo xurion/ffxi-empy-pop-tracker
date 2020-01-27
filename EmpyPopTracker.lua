@@ -56,6 +56,7 @@ defaults.text.text.font = 'Consolas'
 defaults.text.text.size = 10
 defaults.tracking = 'briareus'
 defaults.visible = true
+defaults.add_to_chat_mode = 8
 
 EmpyPopTracker.settings = config.load(defaults)
 EmpyPopTracker.text = require('texts').new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
@@ -159,14 +160,6 @@ function generate_text(data, key_items, items, depth)
   return text
 end
 
-EmpyPopTracker.add_to_chat = function(message)
-  if type(message) ~= 'string' then
-    error('add_to_chat requires the message arg to be a string')
-  end
-
-  windower.add_to_chat(8, message)
-end
-
 EmpyPopTracker.generate_info = function(nm, key_items, items)
   local nm_type = type(nm)
   if nm_type ~= 'table' then
@@ -221,15 +214,15 @@ commands.track = function(...)
   local matching_nm_names = find_nms(nm_name)
 
   if #matching_nm_names == 0 then
-    EmpyPopTracker.add_to_chat('Unable to find a NM using: "' .. nm_name .. '"')
+    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Unable to find a NM using: "' .. nm_name .. '"')
   elseif #matching_nm_names > 1 then
-    EmpyPopTracker.add_to_chat('"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
+    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
     for key, matching_file_name in pairs(matching_nm_names) do
-      EmpyPopTracker.add_to_chat('  Match ' .. key .. ': ' .. ucwords(matching_file_name))
+      windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '  Match ' .. key .. ': ' .. ucwords(matching_file_name))
     end
   else
     active = true
-    EmpyPopTracker.add_to_chat('Now tracking: ' .. ucwords(matching_nm_names[1]))
+    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Now tracking: ' .. ucwords(matching_nm_names[1]))
     EmpyPopTracker.settings.tracking = matching_nm_names[1]
     EmpyPopTracker.update()
     commands.show()
@@ -250,20 +243,20 @@ commands.show = function()
 end
 
 commands.help = function()
-  EmpyPopTracker.add_to_chat('---Empy Pop Tracker---')
-  EmpyPopTracker.add_to_chat('Available commands:')
-  EmpyPopTracker.add_to_chat('//ept t|track briareus - tracks Briareus pops (partial names such as apadem work too!)')
-  EmpyPopTracker.add_to_chat('//ept hide - hides the UI')
-  EmpyPopTracker.add_to_chat('//ept show - shows the UI')
-  EmpyPopTracker.add_to_chat('//ept list - lists all trackable NMs')
-  EmpyPopTracker.add_to_chat('//ept help - displays this help')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '---Empy Pop Tracker---')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Available commands:')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept t|track briareus - tracks Briareus pops (partial names such as apadem work too!)')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept hide - hides the UI')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept show - shows the UI')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept list - lists all trackable NMs')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept help - displays this help')
 end
 
 commands.list = function()
-  EmpyPopTracker.add_to_chat('---Empy Pop Tracker---')
-  EmpyPopTracker.add_to_chat('Trackable NMs:')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '---Empy Pop Tracker---')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Trackable NMs:')
   for _, nm in pairs(nm_data) do
-    EmpyPopTracker.add_to_chat(ucwords(nm.name))
+    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, ucwords(nm.name))
   end
 end
 
