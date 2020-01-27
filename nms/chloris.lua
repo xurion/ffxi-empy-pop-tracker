@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Chloris",
-  bg_url = 'https://www.bg-wiki.com/bg/Chloris',
   pops = { {
     id = 1470, --Gory Scorpion Claw
     type = "key item",

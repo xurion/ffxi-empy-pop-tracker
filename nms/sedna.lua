@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Sedna",
-  bg_url = 'https://www.bg-wiki.com/bg/Sedna',
   pops = { {
     id = 1512, --Shimmering Pugil Scale
     type = "key item",

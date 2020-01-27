@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Itzpapalotl",
-  bg_url = 'https://www.bg-wiki.com/bg/Itzpapalotl',
   pops = { {
     id = 1488, --Venomous Wamoura Feeler
     type = "key item",

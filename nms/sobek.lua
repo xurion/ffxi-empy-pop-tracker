@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Sobek",
-  bg_url = 'https://www.bg-wiki.com/bg/Sobek',
   pops = { {
     id = 1500, --Molted Peiste Skin
     type = "key item",

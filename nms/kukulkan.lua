@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Kukulkan",
-  bg_url = 'https://www.bg-wiki.com/bg/Kukulkan',
   pops = { {
     id = 1466, --Mucid Ahriman Eyeball
     type = "key item",

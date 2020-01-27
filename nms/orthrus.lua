@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Orthrus",
-  bg_url = 'https://www.bg-wiki.com/bg/Orthrus',
   pops = { {
     id = 1520, --Steaming cerberus tongue
     type = "key item",

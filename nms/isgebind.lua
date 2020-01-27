@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Isgebind",
-  bg_url = 'https://www.bg-wiki.com/bg/Isgebind',
   pops = { {
     id = 1526, --Begrimed Dragon Hide
     type = "key item",

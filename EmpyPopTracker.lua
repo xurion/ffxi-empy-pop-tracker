@@ -258,7 +258,8 @@ end
 
 commands.bg = function()
   local tracking_nm = nm_data[EmpyPopTracker.settings.tracking]
-  windower.open_url(tracking_nm.bg_url)
+  local url = 'https://www.bg-wiki.com/bg/' .. tracking_nm.name
+  windower.open_url(url)
 end
 
 EmpyPopTracker.update = function()

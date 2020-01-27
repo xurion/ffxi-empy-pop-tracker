@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
   name = "Bukhis",
-  bg_url = 'https://www.bg-wiki.com/bg/Bukhis',
   pops = { {
     id = 1508, --Ingrown Taurus Nail
     type = "key item",
