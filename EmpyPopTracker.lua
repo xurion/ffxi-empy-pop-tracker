@@ -10,7 +10,7 @@ modification, are permitted provided that the following conditions are met:
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
-    * Neither the name of Empyrean Pop Tracker nor the
+    * Neither the name of Empy Pop Tracker nor the
       names of its contributors may be used to endorse or promote products
       derived from this software without specific prior written permission.
 
@@ -26,7 +26,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
-_addon.name = 'Empyrean Weapon Tracker'
+_addon.name = "Empy Pop Tracker"
 _addon.author = 'Dean James (Xurion of Bismarck)'
 _addon.commands = { 'ept', 'empypoptracker' }
 _addon.version = '2.0.0'
@@ -45,7 +45,7 @@ defaults.text.pos = {}
 defaults.text.pos.x = 0
 defaults.text.pos.y = 0
 defaults.text.bg = {}
-defaults.text.bg.alpha = 118350
+defaults.text.bg.alpha = 150
 defaults.text.bg.blue = 0
 defaults.text.bg.green = 0
 defaults.text.bg.red = 0
@@ -105,9 +105,11 @@ function item_treasure_pool_count(id, treasure)
 end
 
 function ucwords(str)
-  return string.gsub(str, '(%a)([%w_\']*)', function(first, rest)
+  local result = string.gsub(str, '(%a)([%w_\']*)', function(first, rest)
     return first:upper() .. rest:lower()
-   end)
+  end)
+
+  return result
 end
 
 function get_indent(depth)
@@ -122,6 +124,7 @@ function generate_text(data, key_items, items, depth)
     local owns_pop
     local in_pool_count = 0
     local item_identifier = ''
+
     if pop.type == 'key item' then
       resource = res.key_items[pop.id]
       owns_pop = owns_key_item(pop.id, key_items)
@@ -131,6 +134,7 @@ function generate_text(data, key_items, items, depth)
       owns_pop = owns_item(pop.id, items)
       in_pool_count = item_treasure_pool_count(pop.id, items.treasure)
     end
+
     local pop_name = 'Unknown pop'
     if resource then
       pop_name = ucwords(resource.name)
@@ -157,6 +161,7 @@ function generate_text(data, key_items, items, depth)
       text = text .. generate_text(pop.dropped_from, key_items, items, depth + 1)
     end
   end
+
   return text
 end
 
@@ -227,21 +232,24 @@ end
 commands.t = commands.track
 
 commands.hide = function()
+  active = false
   EmpyPopTracker.text:visible(false)
   EmpyPopTracker.settings.visible = false
   EmpyPopTracker.settings:save()
 end
 
 commands.show = function()
+  active = true
   EmpyPopTracker.text:visible(true)
   EmpyPopTracker.settings.visible = true
   EmpyPopTracker.settings:save()
+  EmpyPopTracker.update()
 end
 
 commands.help = function()
   windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '---Empy Pop Tracker---')
   windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Available commands:')
-  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept t|track briareus - tracks Briareus pops (partial names such as apadem work too!)')
+  windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept track briareus - tracks Briareus pops (partial names such as apadem work too!)')
   windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept hide - hides the UI')
   windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept show - shows the UI')
   windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept list - lists all trackable NMs')
@@ -279,7 +287,7 @@ EmpyPopTracker.update = function()
 end
 
 windower.register_event('load', function()
-  if windower.ffxi.get_info().logged_in then
+  if windower.ffxi.get_info().logged_in and EmpyPopTracker.settings.visible then
     active = true
     EmpyPopTracker.update()
   end
@@ -301,8 +309,10 @@ windower.register_event('incoming chunk', function(id)
 end)
 
 windower.register_event('login', function()
-  EmpyPopTracker.text:visible(true)
-  active = true
+  if EmpyPopTracker.settings.visible then
+    EmpyPopTracker.text:visible(true)
+    active = true
+  end
 end)
 
 windower.register_event('logout', function()
