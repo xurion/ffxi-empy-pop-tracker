@@ -49,7 +49,7 @@ return {
         id = 2949, --Quivering Eft Egg
         type = "item",
         dropped_from = {
-          name = "Abas, Forced (K-10)",
+          name = "Abas (K-10)",
           pops = { {
             id = 2922, --Eft Egg
             dropped_from = { name = "Canyon Eft (J-10/J-11)" }
@@ -61,7 +61,7 @@ return {
     id = 1474, --Luxuriant manticore mane
     type = "key item",
     dropped_from = {
-      name = "Muscaliet, Forced (J-6)",
+      name = "Muscaliet (J-6)",
       pops = { {
         id = 2925, --Resilient Mane
         type = "item",
@@ -70,7 +70,7 @@ return {
         id = 2950, --Smooth Whisker
         type = "item",
         dropped_from = {
-          name = "Tefenet, Forced (G-6)",
+          name = "Tefenet (G-6)",
           pops = { {
             id = 2924, --Shocking Whisker
             dropped_from = { name = "Jaguarundi (G-6)" }

@@ -32,7 +32,7 @@ return {
     id = 1504, --Glistening Orobon Liver
     type = "key item",
     dropped_from = {
-      name = "Cep-Kamuy, Forced (F-4)",
+      name = "Cep-Kamuy (F-4)",
       pops = { {
         id = 3089, --Orobon Cheekmeat
         type = "item",

@@ -32,7 +32,7 @@ return {
     id = 1508, --Ingrown Taurus Nail
     type = "key item",
     dropped_from = {
-      name = "Khalkotaur, Forced (F-4)",
+      name = "Khalkotaur (F-4)",
       pops = { {
         id = 3098, --Gnarled Taurus Horn
         type = "item",
@@ -43,7 +43,7 @@ return {
     id = 1509, --Ossified Gargouille Hand
     type = "key item",
     dropped_from = {
-      name = "Quasimodo, Forced (F-4)",
+      name = "Quasimodo (F-4)",
       pops = { {
         id = 3099, --Gargouille Stone
         type = "item",

@@ -32,7 +32,7 @@ return {
     id = 1488, --Venomous Wamoura Feeler
     type = "key item",
     dropped_from = {
-      name = "Granite Borer, Forced (K-10)",
+      name = "Granite Borer (K-10)",
       pops = { {
         id = 3072, --Withered Cocoon
         type = "item",
@@ -47,7 +47,7 @@ return {
     id = 1489, --Bulbous crawler cocoon
     type = "key item",
     dropped_from = {
-      name = "Blazing Eruca, Forced (J-10)",
+      name = "Blazing Eruca (J-10)",
       pops = { {
         id = 3073, --Eruca Egg
         type = "item",

@@ -36,7 +36,7 @@ return {
     id = 1491, --Mucid Worm Segment
     type = "key item",
     dropped_from = {
-      name = "Pallid Percy, Forced (J-7)",
+      name = "Pallid Percy (J-7)",
       pops = { {
         id = 3074, --Blanched Silver
         type = "item",
