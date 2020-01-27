@@ -133,7 +133,7 @@ function generate_text(data, key_items, items, depth)
     end
     local pop_name = 'Unknown pop'
     if resource then
-      pop_name = ucwords(resource.en)
+      pop_name = ucwords(resource.name)
     end
 
     --separator line for each top-level mob
