@@ -201,6 +201,12 @@ function find_nms(query)
 end
 
 windower.register_event('addon command', function(command, ...)
+    if == nil then
+        command = 'help'
+    end
+
+    command = command:lower()
+
     if commands[command] then
         commands[command](...)
     else
