@@ -166,7 +166,6 @@ function generate_text(data, key_items, items, depth)
 end
 
 EmpyPopTracker.generate_info = function(nm, key_items, items)
-    local nm_type = type(nm)
     local info = {
         has_all_kis = true,
         text = ''
@@ -187,13 +186,14 @@ EmpyPopTracker.generate_info = function(nm, key_items, items)
     return info
 end
 
-function find_nms(query)
+function find_nms(pattern)
     local matching_nms = {}
-    local lower_query = query:lower()
+    local lower_pattern = pattern:lower()
     for _, nm in pairs(nm_data) do
-        local result = string.match(nm.name:lower(), '(.*' .. lower_query .. '.*)')
+        local nm_name = nm.name:lower()
+        local result = windower.wc_match(nm_name, lower_pattern)
         if result then
-            table.insert(matching_nms, result)
+            table.insert(matching_nms, nm_name)
         end
     end
 
@@ -201,11 +201,7 @@ function find_nms(query)
 end
 
 windower.register_event('addon command', function(command, ...)
-    if == nil then
-        command = 'help'
-    end
-
-    command = command:lower()
+    command = command and command:lower() or 'help'
 
     if commands[command] then
         commands[command](...)
@@ -218,13 +214,13 @@ commands = {}
 
 commands.track = function(...)
     local args = {...}
-    local nm_name = args[1]
-    local matching_nm_names = find_nms(nm_name)
+    local nm_search_pattern = args[1]
+    local matching_nm_names = find_nms(nm_search_pattern)
 
     if #matching_nm_names == 0 then
-        windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Unable to find a NM using: "' .. nm_name .. '"')
+        windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Unable to find a NM using: "' .. nm_search_pattern .. '"')
     elseif #matching_nm_names > 1 then
-        windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '"' .. nm_name .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
+        windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '"' .. nm_search_pattern .. '" matches ' .. #matching_nm_names .. ' NMs. Please be more explicit:')
         for key, matching_file_name in pairs(matching_nm_names) do
             windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '  Match ' .. key .. ': ' .. ucwords(matching_file_name))
         end
@@ -256,7 +252,7 @@ end
 commands.help = function()
     windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '---Empy Pop Tracker---')
     windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, 'Available commands:')
-    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept track briareus - tracks Briareus pops (partial names such as apadem work too!)')
+    windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept track briareus - tracks Briareus pops (search patterns such as apadem* work too!)')
     windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept hide - hides the UI')
     windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept show - shows the UI')
     windower.add_to_chat(EmpyPopTracker.settings.add_to_chat_mode, '//ept list - lists all trackable NMs')

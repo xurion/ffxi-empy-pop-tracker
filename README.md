@@ -14,9 +14,9 @@ Key items are identified by the Zhe (Ж) character. Treasure pool counts for pop
 
 `//ept track glavoid` tracks Glavoid pop items/key items.
 
-You can also track an NM by typing part of the name, because fuck having to remember how to spell Itzpapalotl:
+You can also track an NM by using a wildcard pattern, because fuck having to remember how to spell Itzpapalotl:
 
-`//ept track itz`
+`//ept track itz*`
 
 For a full list of trackable NMs, see the nms directory or use the `list` command (see below).
 
