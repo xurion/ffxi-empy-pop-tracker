@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 _addon.name = 'Empy Pop Tracker'
 _addon.author = 'Dean James (Xurion of Bismarck)'
 _addon.commands = { 'ept', 'empypoptracker' }
-_addon.version = '2.1.0'
+_addon.version = '2.1.1'
 
 config = require('config')
 res = require('resources')
