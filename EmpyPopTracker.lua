@@ -68,10 +68,12 @@ colors.warning = '\\cs(255,170,0)'
 colors.close = '\\cr'
 
 function owns_item(id, items)
-    for _, bag in ipairs(items) do
-        for _, item in ipairs(bag) do
-            if item.id == id then
-                return true
+    for _, bag in pairs(items) do
+        if type(bag) == 'table' then
+            for _, item in ipairs(bag) do
+                if type(item) == 'table' and item.id == id then
+                    return true
+                end
             end
         end
     end
