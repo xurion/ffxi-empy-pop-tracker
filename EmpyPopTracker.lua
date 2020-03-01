@@ -71,7 +71,7 @@ function owns_item(id, items)
     for _, bag in pairs(items) do
         if type(bag) == 'table' then
             for _, item in ipairs(bag) do
-                if type(item) == 'table' and item.id == id then
+                if item.id == id then
                     return true
                 end
             end
