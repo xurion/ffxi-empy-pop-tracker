@@ -48,6 +48,6 @@ Fistule is a unique NM when compared to the others. It does not require KIs that
 
 ## Contributing
 
-Notice something not quite right? [Raise an issue](https://github.com/xurion/ffxi-empy-pop-tracker/issues).
+If there's an NM you want to have added, or if you notice something not quite right, please [raise an issue](https://github.com/xurion/ffxi-empy-pop-tracker/issues).
 
-[Pull requests](https://github.com/xurion/ffxi-empy-pop-tracker/pulls) welcome!
+Or better yet, [pull requests](https://github.com/xurion/ffxi-empy-pop-tracker/pulls) are welcome!
