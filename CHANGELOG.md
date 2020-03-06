@@ -1,14 +1,21 @@
 # Changelog
 
+## 2.1.1 - Item fix
+
+- Fixed issue wherein regular items would not show green once obtained.
+
 ## 2.1.0 - Arch Dynamis Lord & Warder of Courage
-* Added Arch Dynamis Lord & Warder of Courage.
-  * Special thanks to Headtatt of Siren for the legwork!
-* Added ability for addon to track NMs that are popped with regular items.
+
+- Added Arch Dynamis Lord & Warder of Courage.
+  - Special thanks to Headtatt of Siren for the legwork!
+- Added ability for addon to track NMs that are popped with regular items.
 
 ## 2.0.0 - Full release for Windower
-* All Empyrean NMs added.
-* Ability to switch between them.
-* Command to open NMs BG Wiki page directly.
+
+- All Empyrean NMs added.
+- Ability to switch between them.
+- Command to open NMs BG Wiki page directly.
 
 ## < 2.0.0 - Initial pre release.
-* Only worked for Briareus with hard-coded IDs.
+
+- Only worked for Briareus with hard-coded IDs.
