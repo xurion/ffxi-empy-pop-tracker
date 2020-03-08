@@ -79,7 +79,7 @@ EmpyPopTracker.settings = config.load(defaults)
 EmpyPopTracker.text = require('texts').new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
 
 function start_color(color)
-    return '\\cs(' .. EmpyPopTracker.settings[color].r .. ',' .. EmpyPopTracker.settings[color].g .. ',' .. EmpyPopTracker.settings[color].b .. ')'
+    return '\\cs(' .. EmpyPopTracker.settings.colors[color].r .. ',' .. EmpyPopTracker.settings.colors[color].g .. ',' .. EmpyPopTracker.settings.colors[color].b .. ')'
 end
 
 function owns_item(id, items)
