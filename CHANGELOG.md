@@ -1,7 +1,11 @@
 # Changelog
 
+## 2.2.1 - Chloris fix
+- Chloris hierarchy was incorrectly structured.
+- Repositioned Beholder (child NM to Chloris) for visual clarity.
+
 ## 2.2.0 - Configurable colours
-- Colours for needed, obtained and treaasure pool text, as well as the bg colour when all pops are obtained, are now RGB configurable.
+- Colours for needed, obtained and treasure pool text, as well as the bg colour when all pops are obtained, are now RGB configurable.
 
 ## 2.1.1 - Item fix
 - Fixed issue wherein regular items would not show green once obtained.
