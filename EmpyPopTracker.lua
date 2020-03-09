@@ -59,27 +59,27 @@ defaults.visible = true
 defaults.add_to_chat_mode = 8
 defaults.colors = {}
 defaults.colors.needed = {}
-defaults.colors.needed.r = 255
-defaults.colors.needed.g = 50
-defaults.colors.needed.b = 50
+defaults.colors.needed.red = 255
+defaults.colors.needed.green = 50
+defaults.colors.needed.blue = 50
 defaults.colors.obtained = {}
-defaults.colors.obtained.r = 100
-defaults.colors.obtained.g = 255
-defaults.colors.obtained.b = 100
+defaults.colors.obtained.red = 100
+defaults.colors.obtained.green = 255
+defaults.colors.obtained.blue = 100
 defaults.colors.pool = {}
-defaults.colors.pool.r = 255
-defaults.colors.pool.g = 170
-defaults.colors.pool.b = 0
+defaults.colors.pool.red = 255
+defaults.colors.pool.green = 170
+defaults.colors.pool.blue = 0
 defaults.colors.bgall = {}
-defaults.colors.bgall.r = 0
-defaults.colors.bgall.g = 75
-defaults.colors.bgall.b = 0
+defaults.colors.bgall.red = 0
+defaults.colors.bgall.green = 75
+defaults.colors.bgall.blue = 0
 
 EmpyPopTracker.settings = config.load(defaults)
 EmpyPopTracker.text = require('texts').new(EmpyPopTracker.settings.text, EmpyPopTracker.settings)
 
 function start_color(color)
-    return '\\cs(' .. EmpyPopTracker.settings.colors[color].r .. ',' .. EmpyPopTracker.settings.colors[color].g .. ',' .. EmpyPopTracker.settings.colors[color].b .. ')'
+    return '\\cs(' .. EmpyPopTracker.settings.colors[color].red .. ',' .. EmpyPopTracker.settings.colors[color].green .. ',' .. EmpyPopTracker.settings.colors[color].blue .. ')'
 end
 
 function owns_item(id, items)
@@ -284,9 +284,9 @@ EmpyPopTracker.update = function()
     local generated_info = EmpyPopTracker.generate_info(tracked_nm_data, key_items, items)
     EmpyPopTracker.text:text(generated_info.text)
     if generated_info.has_all_pops then
-        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.bgall.r, EmpyPopTracker.settings.bgall.g, EmpyPopTracker.settings.bgall.b)
+        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.colors.bgall.red, EmpyPopTracker.settings.colors.bgall.green, EmpyPopTracker.settings.colors.bgall.blue)
     else
-        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.text.r, EmpyPopTracker.settings.text.g, EmpyPopTracker.settings.text.b)
+        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.text.red, EmpyPopTracker.settings.text.green, EmpyPopTracker.settings.text.blue)
     end
     if EmpyPopTracker.settings.visible then
         EmpyPopTracker.text:visible(true)
