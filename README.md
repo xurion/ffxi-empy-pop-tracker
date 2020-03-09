@@ -6,6 +6,8 @@ An FFXI Windower 4 addon that tracks items and key items for popping various NMs
 
 Originally developed to track Abyssea Empyrean weapon NMs, hence the name. Key items are identified by the Zhe (Ж) character. Treasure pool counts for pop items are listed in amber after the item in the format of [3] (assuming 3 of that item in the pool).
 
+All text colours are configurable via the auto-generated settings.xml file.
+
 ## Load
 
 `//lua load empypoptracker`
