@@ -70,6 +70,10 @@ defaults.colors.pool = {}
 defaults.colors.pool.red = 255
 defaults.colors.pool.green = 170
 defaults.colors.pool.blue = 0
+defaults.colors.bg = {}
+defaults.colors.bg.red = 0
+defaults.colors.bg.green = 0
+defaults.colors.bg.blue = 0
 defaults.colors.bgall = {}
 defaults.colors.bgall.red = 0
 defaults.colors.bgall.green = 75
@@ -286,7 +290,7 @@ EmpyPopTracker.update = function()
     if generated_info.has_all_pops then
         EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.colors.bgall.red, EmpyPopTracker.settings.colors.bgall.green, EmpyPopTracker.settings.colors.bgall.blue)
     else
-        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.text.red, EmpyPopTracker.settings.text.green, EmpyPopTracker.settings.text.blue)
+        EmpyPopTracker.text:bg_color(EmpyPopTracker.settings.colors.bg.red, EmpyPopTracker.settings.colors.bg.green, EmpyPopTracker.settings.colors.bg.blue)
     end
     if EmpyPopTracker.settings.visible then
         EmpyPopTracker.text:visible(true)
