@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2 - BG colour fix
+- Fixed issue wherein the background colour of the text box would remain green after using pop items.
+- Added default background colours to configurable colours.
+
 ## 2.2.1 - Chloris fix
 - Chloris hierarchy was incorrectly structured.
 - Repositioned Beholder (child NM to Chloris) for visual clarity.
@@ -20,5 +24,5 @@
 - Ability to switch between them.
 - Command to open NMs BG Wiki page directly.
 
-## < 2.0.0 - Initial pre release.
+## < 2.0.0 - Initial pre release
 - Only worked for Briareus with hard-coded IDs.
