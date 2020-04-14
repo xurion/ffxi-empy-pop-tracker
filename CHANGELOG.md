@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.0 - Colorless Soul NMs
+-Added Brulo, Maere and Ogopogo.
+
 ## 2.2.2 - BG colour fix
 - Fixed issue wherein the background colour of the text box would remain green after using pop items.
 - Added default background colours to configurable colours.
