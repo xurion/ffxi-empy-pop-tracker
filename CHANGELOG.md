@@ -1,7 +1,10 @@
 # Changelog
 
+## 2.4.0 - Items of interest
+- The count of items of interest now tracked at the bottom. For example, Isgebind Hearts.
+
 ## 2.3.0 - Colorless Soul NMs
--Added Brulo, Maere and Ogopogo.
+- Added Brulo, Maere and Ogopogo.
 
 ## 2.2.2 - BG colour fix
 - Fixed issue wherein the background colour of the text box would remain green after using pop items.
