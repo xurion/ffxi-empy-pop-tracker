@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
     name = 'Ironclad Sunderer',
-    item = 3293, --Iron Plate
-    item_target_count = 50,
+    collectable = 3293, --Iron Plate
+    collectable_target_count = 50,
     pops = { {
         id = 3260, --Teekesselchen Fragment
         type = 'item',

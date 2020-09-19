@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 return {
     name = 'Ironclad Triturator',
-    item = 3293, --Iron Plate
-    item_target_count = 50,
+    collectable = 3293, --Iron Plate
+    collectable_target_count = 50,
     pops = { {
         id = 3245, --Bevel Gear
         type = 'item',
