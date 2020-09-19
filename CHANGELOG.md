@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.0 - Mini mode and collectibles toggle
+
+- Added ability to display UI with reduced information for smaller screens.
+- Added toggle for display of collectable items.
+
 ## 2.6.1 - Fixes
 
 - Fixed tracking of Ironclad Iron Plates.
