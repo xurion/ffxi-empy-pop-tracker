@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.1 - Fixes
+
+- Fixed tracking of Ironclad Iron Plates.
+- Fixed issue wherein NMs that are popped with regular items would compare item
+  IDs to key item IDs.
+
 ## 2.6.0 - Heroes of Abyssea NMs
 
 - Resheph, Amphitrite, and Bennu.
@@ -10,7 +16,8 @@
 
 ## 2.4.0 - Items of interest
 
-- The count of items of interest now tracked at the bottom. For example, Isgebind Hearts.
+- The count of items of interest now tracked at the bottom. For example,
+  Isgebind Hearts.
 
 ## 2.3.0 - Colorless Soul NMs
 
@@ -18,7 +25,8 @@
 
 ## 2.2.2 - BG colour fix
 
-- Fixed issue wherein the background colour of the text box would remain green after using pop items.
+- Fixed issue wherein the background colour of the text box would remain green
+  after using pop items.
 - Added default background colours to configurable colours.
 
 ## 2.2.1 - Chloris fix
@@ -28,7 +36,8 @@
 
 ## 2.2.0 - Configurable colours
 
-- Colours for needed, obtained and treasure pool text, as well as the bg colour when all pops are obtained, are now RGB configurable.
+- Colours for needed, obtained and treasure pool text, as well as the bg colour
+  when all pops are obtained, are now RGB configurable.
 
 ## 2.1.1 - Item fix
 
