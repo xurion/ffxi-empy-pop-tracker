@@ -1,0 +1,27 @@
+name: Windower artifact
+
+# The workflow triggers whe main is changed.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  artifacts:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check-out repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - uses: vimtor/action-zip@v1
+        with:
+          dest: artifact.zip
+          files: EmpyPopTracker.lua README.md nms/
+          recursive: false
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Windower artifact
+          path: artifact.zip
