@@ -216,7 +216,12 @@ end
 EmpyPopTracker.generate_info = function(nm, key_items, items)
     return {
         has_all_pops = not nm.pops or T(nm.pops):all(function(item)
-            return item.type == 'item' and owns_item(item.id, items) or owns_key_item(item.id, key_items)
+            -- Avoids confusing item and key item IDs
+            if item.type == 'item' then
+                return owns_item(item.id, items)
+            end
+
+            return owns_key_item(item.id, key_items)
         end),
         text = generate_text(nm, key_items, items, 1)
     }
