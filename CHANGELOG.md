@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.0 - Collectibles treasure pool count
+
+- Collectible items in the treasure pool now display alongside collectible total
+
 ## 2.7.0 - Mini mode and collectibles toggle
 
 - Added ability to display UI with reduced information for smaller screens.
